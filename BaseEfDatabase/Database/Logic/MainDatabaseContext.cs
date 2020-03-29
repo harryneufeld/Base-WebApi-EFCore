@@ -1,21 +1,23 @@
-﻿using Database.Model.Shared;
+﻿using Database.Logic.Context;
+using Database.Model.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Database.Logic.Context
+namespace Database.Logic
 {
-    public class BaseEfDatabaseContext : DbContext
+    public class MainDatabaseContext : BaseDatabaseContext
     {
         public DbSet<Mandator> Mandators { get; set; }
         public DbSet<BusinessItem> BusinessItems { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<City> Cities { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MssqlLocalDb;Initial Catalog=BaseEfDatabase;");
-        }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserRight> UserRights { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<GroupRight> GroupRights { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
