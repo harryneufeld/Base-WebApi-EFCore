@@ -10,8 +10,6 @@ using Database.Model.Shared;
 
 namespace WebApiService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class BusinessItemController : Controller
     {
         private readonly MainDatabaseContext _context;
