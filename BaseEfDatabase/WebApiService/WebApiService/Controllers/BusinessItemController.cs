@@ -21,28 +21,27 @@ namespace WebApiService.Controllers
             _context = context;
         }
 
-        // GET: api/BusinessItem
+        // GET: BusinessItem
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
             return await _context.BusinessItems.ToListAsync();
         }
 
-        // GET: api/BusinessItem/5
+        #region GetMethods
+        // GET: BusinessItem/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
-        {
-            var businessItem = await _context.BusinessItems.FindAsync(id);
+        public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id) 
+            => await _context.BusinessItems.FindAsync(id);
 
-            if (businessItem == null)
-            {
-                return NotFound();
-            }
+        // GET: BusinessItem/Name/The_Name
+        [HttpGet()]
+        [Route("Name/{Name}")]
+        public async Task<ActionResult<BusinessItem>> GetBusinessItemByName(string Name)
+            => await _context.BusinessItems.FindAsync(Name);
+        #endregion
 
-            return businessItem;
-        }
-
-        // PUT: api/BusinessItem/5
+        // PUT: BusinessItem/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -74,7 +73,7 @@ namespace WebApiService.Controllers
             return NoContent();
         }
 
-        // POST: api/BusinessItem
+        // POST: BusinessItem
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -83,10 +82,10 @@ namespace WebApiService.Controllers
             _context.BusinessItems.Add(businessItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBusinessItem), new { id = businessItem.BusinessItemId }, businessItem);
+            return CreatedAtAction(nameof(BusinessItem), new { id = businessItem.BusinessItemId }, businessItem);
         }
 
-        // DELETE: api/BusinessItem/5
+        // DELETE: BusinessItem/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
         {
