@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Database;
+using Microsoft.EntityFrameworkCore;
+using Database.Model.Shared;
+using Database.Logic;
 
 namespace WebApiService
 {
@@ -26,7 +28,7 @@ namespace WebApiService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Database.Logic.MainDatabaseContext>();
+            services.AddDbContext<MainDatabaseContext>();
             services.AddControllers();
         }
 
@@ -46,9 +48,7 @@ namespace WebApiService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=BusinessItem}/{action=Index}/{Id}");
+                endpoints.MapControllers();
             });
         }
     }

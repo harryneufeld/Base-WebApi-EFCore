@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Database.Logic;
 using Database.Model.Shared;
 
 namespace WebApiService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class BusinessItemController : Controller
+    public class BusinessItemController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
 
@@ -21,131 +21,85 @@ namespace WebApiService.Controllers
             _context = context;
         }
 
-        // GET: BusinessItem
-        public async Task<IActionResult> Index()
+        // GET: api/BusinessItem
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
-            return View(await _context.BusinessItems.ToListAsync());
+            return await _context.BusinessItems.ToListAsync();
         }
 
-        // GET: BusinessItem/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        // GET: api/BusinessItem/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var businessItem = await _context.BusinessItems
-                .FirstOrDefaultAsync(m => m.BusinessItemId == id);
-            if (businessItem == null)
-            {
-                return NotFound();
-            }
-
-            return View(businessItem);
-        }
-
-        // GET: BusinessItem/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: BusinessItem/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BusinessItemId,Name")] BusinessItem businessItem)
-        {
-            if (ModelState.IsValid)
-            {
-                businessItem.BusinessItemId = Guid.NewGuid();
-                _context.Add(businessItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(businessItem);
-        }
-
-        // GET: BusinessItem/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var businessItem = await _context.BusinessItems.FindAsync(id);
+
             if (businessItem == null)
             {
                 return NotFound();
             }
-            return View(businessItem);
+
+            return businessItem;
         }
 
-        // POST: BusinessItem/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BusinessItemId,Name")] BusinessItem businessItem)
+        // PUT: api/BusinessItem/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutBusinessItem(Guid id, BusinessItem businessItem)
         {
             if (id != businessItem.BusinessItemId)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(businessItem).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(businessItem);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BusinessItemExists(businessItem.BusinessItemId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(businessItem);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BusinessItemExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: BusinessItem/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        // POST: api/BusinessItem
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<BusinessItem>> PostBusinessItem(BusinessItem businessItem)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            _context.BusinessItems.Add(businessItem);
+            await _context.SaveChangesAsync();
 
-            var businessItem = await _context.BusinessItems
-                .FirstOrDefaultAsync(m => m.BusinessItemId == id);
+            return CreatedAtAction(nameof(GetBusinessItem), new { id = businessItem.BusinessItemId }, businessItem);
+        }
+
+        // DELETE: api/BusinessItem/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
+        {
+            var businessItem = await _context.BusinessItems.FindAsync(id);
             if (businessItem == null)
             {
                 return NotFound();
             }
 
-            return View(businessItem);
-        }
-
-        // POST: BusinessItem/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var businessItem = await _context.BusinessItems.FindAsync(id);
             _context.BusinessItems.Remove(businessItem);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return businessItem;
         }
 
         private bool BusinessItemExists(Guid id)

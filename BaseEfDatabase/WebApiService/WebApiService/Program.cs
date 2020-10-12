@@ -11,7 +11,6 @@ namespace WebApiService
 {
     public class Program
     {
-        // DOKU: https://docs.microsoft.com/de-de/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&tabs=visual-studio
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
