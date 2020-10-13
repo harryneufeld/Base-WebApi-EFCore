@@ -19,6 +19,11 @@ namespace Database.Logic
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<GroupRight> GroupRights { get; set; }
 
+        public MainDatabaseContext()
+        {
+            Database.Migrate();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Address>()
@@ -29,6 +34,8 @@ namespace Database.Logic
 
             modelBuilder.Entity<City>()
                 .HasKey(c => c.PostalCode);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

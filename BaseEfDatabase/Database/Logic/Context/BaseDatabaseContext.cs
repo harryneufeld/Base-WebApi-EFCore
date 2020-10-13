@@ -4,7 +4,7 @@ using System;
 
 namespace Database.Logic.Context
 {
-    public class BaseDatabaseContext : DbContext
+    public abstract class BaseDatabaseContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
