@@ -10,7 +10,7 @@ using Database.Model.Shared;
 
 namespace WebApiService.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BusinessItemController : ControllerBase
     {
@@ -28,6 +28,7 @@ namespace WebApiService.Controllers
         #region GetMethods
         // GET: BusinessItem
         [HttpGet]
+        [Route("All")]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
             return await _context.BusinessItems.ToListAsync();
@@ -41,8 +42,8 @@ namespace WebApiService.Controllers
         // GET: BusinessItem/Name/The_Name
         [HttpGet()]
         [Route("Name/{Name}")]
-        public async Task<ActionResult<BusinessItem>> GetBusinessItemByName(string Name)
-            => await _context.BusinessItems.FindAsync(_context.BusinessItems.Where(x => x.Name == Name).FirstOrDefault().BusinessItemId);
+        public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
+            => await _context.BusinessItems.Where(x => x.Name.Contains(name)).ToListAsync();
         #endregion
 
         #region PutMethods
@@ -108,6 +109,39 @@ namespace WebApiService.Controllers
             await _context.SaveChangesAsync();
 
             return businessItem;
+        }
+
+        // DELETE: BusinessItem/Name
+        [HttpDelete("Name/{Name}")]
+        public async Task<ActionResult<IEnumerable<BusinessItem>>> DeleteBusinessItemByName(string name)
+        {
+            var businessItems = await _context.BusinessItems.Where(x => x.Name.Contains(name)).ToListAsync();
+            if (businessItems == null)
+            {
+                return NotFound();
+            }
+
+            _context.BusinessItems.RemoveRange(businessItems);
+            await _context.SaveChangesAsync();
+
+            return businessItems;
+        }
+
+        // DELETE: BusinessItem/All
+        [HttpDelete("All")]
+        public async Task<ActionResult<IEnumerable<BusinessItem>>> DeleteBusinessItemAll()
+        {
+            var businessItems = _context.BusinessItems;
+            if (businessItems == null)
+            {
+                return NotFound();
+            }
+
+            _context.BusinessItems.RemoveRange(businessItems);
+
+            await _context.SaveChangesAsync();
+
+            return businessItems;
         }
         #endregion
 
