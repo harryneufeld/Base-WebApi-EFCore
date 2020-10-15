@@ -8,36 +8,65 @@ namespace Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
-                {
-                    PostalCode = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CityName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cities", x => x.PostalCode);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
                 {
                     AddressId = table.Column<Guid>(nullable: false),
                     StreetName = table.Column<string>(nullable: true),
                     StreetNumber = table.Column<int>(nullable: false),
-                    PostalCode = table.Column<int>(nullable: false)
+                    PostalCode = table.Column<int>(nullable: false),
+                    IsMainAddress = table.Column<bool>(nullable: false),
+                    City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Addresses", x => x.AddressId);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Cities_PostalCode",
-                        column: x => x.PostalCode,
-                        principalTable: "Cities",
-                        principalColumn: "PostalCode",
-                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserGroups",
+                columns: table => new
+                {
+                    UserGroupId = table.Column<Guid>(nullable: false),
+                    UserGroupName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGroups", x => x.UserGroupId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRights",
+                columns: table => new
+                {
+                    UserRightId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    FieldId = table.Column<int>(nullable: false),
+                    Allow = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRights", x => x.UserRightId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    Birthday = table.Column<DateTime>(nullable: true),
+                    MailAddress = table.Column<string>(nullable: true),
+                    PhoneNumberPrefix = table.Column<int>(nullable: false),
+                    PhoneNumberSuffix = table.Column<int>(nullable: false),
+                    MobilePhonePrefix = table.Column<int>(nullable: false),
+                    MobilePhoneSuffix = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,6 +74,8 @@ namespace Database.Migrations
                 columns: table => new
                 {
                     MandatorId = table.Column<Guid>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: true),
+                    EditDate = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     AddressId = table.Column<Guid>(nullable: true)
                 },
@@ -56,6 +87,27 @@ namespace Database.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupRights",
+                columns: table => new
+                {
+                    GroupRightId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    FieldId = table.Column<int>(nullable: false),
+                    Allow = table.Column<bool>(nullable: false),
+                    UserGroupId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupRights", x => x.GroupRightId);
+                    table.ForeignKey(
+                        name: "FK_GroupRights_UserGroups_UserGroupId",
+                        column: x => x.UserGroupId,
+                        principalTable: "UserGroups",
+                        principalColumn: "UserGroupId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -116,11 +168,6 @@ namespace Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_PostalCode",
-                table: "Addresses",
-                column: "PostalCode");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_BusinessItems_AddressId",
                 table: "BusinessItems",
                 column: "AddressId");
@@ -129,6 +176,11 @@ namespace Database.Migrations
                 name: "IX_BusinessItems_MandatorId",
                 table: "BusinessItems",
                 column: "MandatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupRights_UserGroupId",
+                table: "GroupRights",
+                column: "UserGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mandators_AddressId",
@@ -149,7 +201,19 @@ namespace Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "GroupRights");
+
+            migrationBuilder.DropTable(
                 name: "Persons");
+
+            migrationBuilder.DropTable(
+                name: "UserRights");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "UserGroups");
 
             migrationBuilder.DropTable(
                 name: "BusinessItems");
@@ -159,9 +223,6 @@ namespace Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Addresses");
-
-            migrationBuilder.DropTable(
-                name: "Cities");
         }
     }
 }

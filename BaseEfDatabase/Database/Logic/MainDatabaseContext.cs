@@ -13,7 +13,6 @@ namespace Database.Logic
         public DbSet<BusinessItem> BusinessItems { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<City> Cities { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRight> UserRights { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
@@ -26,14 +25,14 @@ namespace Database.Logic
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>()
-                .HasOne(a => a.City)
-                .WithMany(c => c.AddressList)
-                .HasForeignKey(a => a.PostalCode)
-                .HasPrincipalKey(c => c.PostalCode);
-
-            modelBuilder.Entity<City>()
-                .HasKey(c => c.PostalCode);
+            ////Addresse hatte City als FK
+            //modelBuilder.Entity<Address>()
+            //    .HasOne(a => a.City)
+            //    .WithMany(c => c.AddressList)
+            //    .HasForeignKey(a => a.PostalCode)
+            //    .HasPrincipalKey(c => c.PostalCode);
+            //modelBuilder.Entity<City>()
+            //    .HasKey(c => c.PostalCode);
 
             base.OnModelCreating(modelBuilder);
         }

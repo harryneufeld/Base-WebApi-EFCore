@@ -8,33 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using Database.Logic;
 using Database.Model.Shared;
 
-namespace WebApiService.Controllers
+namespace Service.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BusinessItemController : ControllerBase
     {
-        #region Fields
         private readonly MainDatabaseContext _context;
-        #endregion
 
-        #region Contructor
         public BusinessItemController(MainDatabaseContext context)
         {
             _context = context;
         }
-        #endregion
-        
-        #region GetMethods
-        // GET: BusinessItem
+
+        // GET: api/BusinessItem
         [HttpGet]
-        //[Route("All")]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
             return await _context.BusinessItems.ToListAsync();
         }
 
-        // GET: BusinessItem/5
+        // GET: api/BusinessItem/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
         {
@@ -48,24 +42,7 @@ namespace WebApiService.Controllers
             return businessItem;
         }
 
-       // GET: BusinessItem/Name/The_Name
-       [HttpGet()]
-       [Route("Name/{Name}")]
-        public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
-        {
-            var businessItems = await _context.BusinessItems.Where(x => x.Name.Contains(name)).ToListAsync();
-
-            if (businessItems == null)
-            {
-                return NotFound();
-            }
-
-            return businessItems;
-        }
-        #endregion
-
-        #region PutMethods
-        // PUT: BusinessItem/5
+        // PUT: api/BusinessItem/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -96,24 +73,20 @@ namespace WebApiService.Controllers
 
             return NoContent();
         }
-        #endregion
 
-        #region PostMethods
-        // POST: BusinessItem
+        // POST: api/BusinessItem
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<BusinessItem>> PostBusinessItem(BusinessItem businessItem)
         {
-            await _context.BusinessItems.AddAsync(businessItem);
+            _context.BusinessItems.Add(businessItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(BusinessItem), new { id = businessItem.BusinessItemId }, businessItem);
+            return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
         }
-        #endregion
 
-        #region DeleteMethods
-        // DELETE: BusinessItem/5
+        // DELETE: api/BusinessItem/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
         {
@@ -128,41 +101,6 @@ namespace WebApiService.Controllers
 
             return businessItem;
         }
-
-        // DELETE: BusinessItem/Name
-        [HttpDelete("Name/{Name}")]
-        public async Task<ActionResult<IEnumerable<BusinessItem>>> DeleteBusinessItemByName(string name)
-        {
-            var businessItems = await _context.BusinessItems.Where(x => x.Name.Contains(name)).ToListAsync();
-            if (businessItems == null)
-            {
-                return NotFound();
-            }
-
-            _context.BusinessItems.RemoveRange(businessItems);
-            await _context.SaveChangesAsync();
-
-            return businessItems;
-        }
-
-        // DELETE: BusinessItem/All
-        [HttpDelete]
-        [Route("All")]
-        public async Task<ActionResult<IEnumerable<BusinessItem>>> DeleteBusinessItemAll()
-        {
-            var businessItems = _context.BusinessItems;
-            if (businessItems == null)
-            {
-                return NotFound();
-            }
-
-            _context.BusinessItems.RemoveRange(businessItems);
-
-            await _context.SaveChangesAsync();
-
-            return businessItems;
-        }
-        #endregion
 
         private bool BusinessItemExists(Guid id)
         {
