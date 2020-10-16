@@ -10,7 +10,7 @@ using Database.Model.Shared;
 
 namespace Service.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BusinessItemController : ControllerBase
     {
@@ -21,18 +21,27 @@ namespace Service.Controllers
             _context = context;
         }
 
-        // GET: api/BusinessItem
+        #region GET
+        // GET: BusinessItem
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
-            return await _context.BusinessItems.ToListAsync();
+            return await _context.BusinessItems
+                .Include(b => b.PersonList)
+                .Include(b => b.Address)
+                .Include(b => b.Mandator)
+                .ToListAsync();
         }
 
-        // GET: api/BusinessItem/5
+        // GET: BusinessItem/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
         {
-            var businessItem = await _context.BusinessItems.FindAsync(id);
+            var businessItem = await _context.BusinessItems
+                .Include(b => b.PersonList)
+                .Include(b => b.Address)
+                .Include(b => b.Mandator)
+                .Where(b => b.BusinessItemId == id).FirstAsync();
 
             if (businessItem == null)
             {
@@ -42,7 +51,28 @@ namespace Service.Controllers
             return businessItem;
         }
 
-        // PUT: api/BusinessItem/5
+        // GET: BusinessItem/TheName
+        [HttpGet()]
+        [Route("Name/{Name}")]
+        public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
+        {
+            var businessItem = await _context.BusinessItems
+                .Include(b => b.PersonList)
+                .Include(b => b.Address)
+                .Include(b => b.Mandator)
+                .Where(x => x.Name.Contains(name))
+                .ToListAsync();
+
+            if (businessItem == null)
+            {
+                return NotFound();
+            }
+
+            return businessItem;
+        }
+        #endregion
+
+        // PUT: BusinessItem/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -74,7 +104,7 @@ namespace Service.Controllers
             return NoContent();
         }
 
-        // POST: api/BusinessItem
+        // POST: BusinessItem
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -86,7 +116,7 @@ namespace Service.Controllers
             return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
         }
 
-        // DELETE: api/BusinessItem/5
+        // DELETE: BusinessItem/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
         {
