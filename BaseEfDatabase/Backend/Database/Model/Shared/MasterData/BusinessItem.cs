@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Database.Model.Shared
+namespace Backend.Database.Model.Shared.MasterData
 {
     public class BusinessItem
     {

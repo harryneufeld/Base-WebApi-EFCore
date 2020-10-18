@@ -12,48 +12,48 @@ namespace Service.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UserGroupController : ControllerBase
+    public class UserGroupRightController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
 
-        public UserGroupController(MainDatabaseContext context)
+        public UserGroupRightController(MainDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: api/UserGroup
+        // GET: api/UserGroupRight
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
+        public async Task<ActionResult<IEnumerable<UserGroupRight>>> GetUserGroupRights()
         {
-            return await _context.UserGroups.ToListAsync();
+            return await _context.UserGroupRights.ToListAsync();
         }
 
-        // GET: api/UserGroup/5
+        // GET: api/UserGroupRight/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
+        public async Task<ActionResult<UserGroupRight>> GetUserGroupRight(Guid id)
         {
-            var userGroup = await _context.UserGroups.FindAsync(id);
+            var UserGroupRight = await _context.UserGroupRights.FindAsync(id);
 
-            if (userGroup == null)
+            if (UserGroupRight == null)
             {
                 return NotFound();
             }
 
-            return userGroup;
+            return UserGroupRight;
         }
 
-        // PUT: api/UserGroup/5
+        // PUT: api/UserGroupRight/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserGroup(Guid id, UserGroup userGroup)
+        public async Task<IActionResult> PutUserGroupRight(Guid id, UserGroupRight UserGroupRight)
         {
-            if (id != userGroup.UserGroupId)
+            if (id != UserGroupRight.UserGroupRightId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userGroup).State = EntityState.Modified;
+            _context.Entry(UserGroupRight).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Service.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserGroupExists(id))
+                if (!UserGroupRightExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace Service.Controllers
             return NoContent();
         }
 
-        // POST: api/UserGroup
+        // POST: api/UserGroupRight
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<UserGroup>> PostUserGroup(UserGroup userGroup)
+        public async Task<ActionResult<UserGroupRight>> PostUserGroupRight(UserGroupRight UserGroupRight)
         {
-            _context.UserGroups.Add(userGroup);
+            _context.UserGroupRights.Add(UserGroupRight);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserGroup", new { id = userGroup.UserGroupId }, userGroup);
+            return CreatedAtAction("GetUserGroupRight", new { id = UserGroupRight.UserGroupRightId }, UserGroupRight);
         }
 
-        // DELETE: api/UserGroup/5
+        // DELETE: api/UserGroupRight/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserGroup>> DeleteUserGroup(Guid id)
+        public async Task<ActionResult<UserGroupRight>> DeleteUserGroupRight(Guid id)
         {
-            var userGroup = await _context.UserGroups.FindAsync(id);
-            if (userGroup == null)
+            var UserGroupRight = await _context.UserGroupRights.FindAsync(id);
+            if (UserGroupRight == null)
             {
                 return NotFound();
             }
 
-            _context.UserGroups.Remove(userGroup);
+            _context.UserGroupRights.Remove(UserGroupRight);
             await _context.SaveChangesAsync();
 
-            return userGroup;
+            return UserGroupRight;
         }
 
-        private bool UserGroupExists(Guid id)
+        private bool UserGroupRightExists(Guid id)
         {
-            return _context.UserGroups.Any(e => e.UserGroupId == id);
+            return _context.UserGroupRights.Any(e => e.UserGroupRightId == id);
         }
     }
 }

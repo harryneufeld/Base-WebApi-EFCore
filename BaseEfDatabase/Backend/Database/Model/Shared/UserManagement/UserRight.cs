@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Database.Model.Shared
+namespace Backend.Database.Model.Shared.UserManagement
 {
     public class UserRight
     {

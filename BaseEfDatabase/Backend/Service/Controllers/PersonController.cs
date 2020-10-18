@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Database.Logic;
-using Database.Model.Shared;
+using Backend.Database.Logic.Context;
+using Backend.Database.Model.Shared.MasterData;
 
 namespace Service.Controllers
 {

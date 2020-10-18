@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Database.Model.Base
+namespace Backend.Database.Model.Base
 {
     public class BaseModel
     {

@@ -1,0 +1,10 @@
+﻿using System;
+
+namespace Backend.Shared.Logic.Helper.Password
+{
+    public interface IPasswordHasher
+    {
+        string Hash(string password);
+        (bool Verified, bool NeedsUpgrade) Check(string hash, string password);
+    }
+}

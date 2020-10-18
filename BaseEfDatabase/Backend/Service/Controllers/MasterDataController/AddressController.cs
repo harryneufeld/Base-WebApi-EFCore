@@ -5,55 +5,55 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Database.Logic;
-using Database.Model.Shared;
+using Backend.Database.Logic.Context;
+using Backend.Database.Model.Shared.MasterData;
 
 namespace Service.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class GroupRightController : ControllerBase
+    public class AddressController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
 
-        public GroupRightController(MainDatabaseContext context)
+        public AddressController(MainDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: api/GroupRight
+        // GET: api/Address
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GroupRight>>> GetGroupRights()
+        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            return await _context.GroupRights.ToListAsync();
+            return await _context.Addresses.ToListAsync();
         }
 
-        // GET: api/GroupRight/5
+        // GET: api/Address/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GroupRight>> GetGroupRight(Guid id)
+        public async Task<ActionResult<Address>> GetAddress(Guid id)
         {
-            var groupRight = await _context.GroupRights.FindAsync(id);
+            var address = await _context.Addresses.FindAsync(id);
 
-            if (groupRight == null)
+            if (address == null)
             {
                 return NotFound();
             }
 
-            return groupRight;
+            return address;
         }
 
-        // PUT: api/GroupRight/5
+        // PUT: api/Address/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGroupRight(Guid id, GroupRight groupRight)
+        public async Task<IActionResult> PutAddress(Guid id, Address address)
         {
-            if (id != groupRight.GroupRightId)
+            if (id != address.AddressId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(groupRight).State = EntityState.Modified;
+            _context.Entry(address).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Service.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GroupRightExists(id))
+                if (!AddressExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace Service.Controllers
             return NoContent();
         }
 
-        // POST: api/GroupRight
+        // POST: api/Address
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<GroupRight>> PostGroupRight(GroupRight groupRight)
+        public async Task<ActionResult<Address>> PostAddress(Address address)
         {
-            _context.GroupRights.Add(groupRight);
+            _context.Addresses.Add(address);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGroupRight", new { id = groupRight.GroupRightId }, groupRight);
+            return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
         }
 
-        // DELETE: api/GroupRight/5
+        // DELETE: api/Address/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GroupRight>> DeleteGroupRight(Guid id)
+        public async Task<ActionResult<Address>> DeleteAddress(Guid id)
         {
-            var groupRight = await _context.GroupRights.FindAsync(id);
-            if (groupRight == null)
+            var address = await _context.Addresses.FindAsync(id);
+            if (address == null)
             {
                 return NotFound();
             }
 
-            _context.GroupRights.Remove(groupRight);
+            _context.Addresses.Remove(address);
             await _context.SaveChangesAsync();
 
-            return groupRight;
+            return address;
         }
 
-        private bool GroupRightExists(Guid id)
+        private bool AddressExists(Guid id)
         {
-            return _context.GroupRights.Any(e => e.GroupRightId == id);
+            return _context.Addresses.Any(e => e.AddressId == id);
         }
     }
 }

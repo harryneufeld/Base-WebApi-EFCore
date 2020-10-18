@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Database.Model.Shared
+namespace Backend.Database.Model.Shared.UserManagement
 {
     public class User
     {
@@ -21,7 +21,7 @@ namespace Database.Model.Shared
 
         public string Name { get => _name; set => _name = value; }
         public string LastName { get => _lastName; set => _lastName = value; }
-        public string Password { get => _password; set => _password = value; }
+        public string Password { get => _password; set { _password = value; }}
         public DateTime? Birthday { get => _birthday; set => _birthday = value; }
         public string MailAddress { get => _mailAddress; set => _mailAddress = value; }
         public int PhoneNumberPrefix { get => _phoneNumberPrefix; set => _phoneNumberPrefix = value; }

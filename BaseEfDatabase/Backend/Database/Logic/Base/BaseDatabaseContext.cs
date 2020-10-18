@@ -1,8 +1,6 @@
-﻿using Database.Model.Shared;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Database.Logic.Context
+namespace Backend.Database.Logic.Base
 {
     public abstract class BaseDatabaseContext : DbContext
     {

@@ -1,11 +1,9 @@
-﻿using Database.Logic.Context;
-using Database.Model.Shared;
+﻿using Backend.Database.Logic.Base;
+using Backend.Database.Model.Shared.MasterData;
+using Backend.Database.Model.Shared.UserManagement;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Database.Logic
+namespace Backend.Database.Logic.Context
 {
     public class MainDatabaseContext : BaseDatabaseContext
     {
@@ -16,7 +14,7 @@ namespace Database.Logic
         public DbSet<User> Users { get; set; }
         public DbSet<UserRight> UserRights { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
-        public DbSet<GroupRight> GroupRights { get; set; }
+        public DbSet<UserGroupRight> UserGroupRights { get; set; }
 
         public MainDatabaseContext()
         {
