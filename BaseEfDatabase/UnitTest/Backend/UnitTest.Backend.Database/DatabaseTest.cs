@@ -28,10 +28,9 @@ namespace UnitTest.Backend.Database
                 {
                     AddressId = new System.Guid(),
                     City = "Bonn",
-                    PostalCode = 53117,
-                    IsMainAddress = true,
+                    PostalCode = "53117",
                     StreetName = "Pariser Straﬂe",
-                    StreetNumber = 14
+                    StreetNumber = "14"
                 },
             };
 

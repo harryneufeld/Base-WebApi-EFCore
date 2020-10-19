@@ -10,18 +10,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Database.Migrations
 {
     [DbContext(typeof(MainDatabaseContext))]
-    [Migration("20201015210307_initial")]
+    [Migration("20201019191220_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Database.Model.Shared.Address", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.Address", b =>
                 {
                     b.Property<Guid>("AddressId")
                         .ValueGeneratedOnAdd()
@@ -30,24 +30,21 @@ namespace Backend.Database.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsMainAddress")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("int");
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StreetNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("StreetNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.BusinessItem", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.BusinessItem", b =>
                 {
                     b.Property<Guid>("BusinessItemId")
                         .ValueGeneratedOnAdd()
@@ -62,6 +59,9 @@ namespace Backend.Database.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BusinessItemId");
 
                     b.HasIndex("AddressId");
@@ -71,32 +71,7 @@ namespace Backend.Database.Migrations
                     b.ToTable("BusinessItems");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.GroupRight", b =>
-                {
-                    b.Property<Guid>("GroupRightId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Allow")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("FieldId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("UserGroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("GroupRightId");
-
-                    b.HasIndex("UserGroupId");
-
-                    b.ToTable("GroupRights");
-                });
-
-            modelBuilder.Entity("Database.Model.Shared.Mandator", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.Mandator", b =>
                 {
                     b.Property<Guid>("MandatorId")
                         .ValueGeneratedOnAdd()
@@ -121,7 +96,7 @@ namespace Backend.Database.Migrations
                     b.ToTable("Mandators");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.Person", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.Person", b =>
                 {
                     b.Property<Guid>("PersonId")
                         .ValueGeneratedOnAdd()
@@ -157,7 +132,7 @@ namespace Backend.Database.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.User", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.UserManagement.User", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -172,30 +147,21 @@ namespace Backend.Database.Migrations
                     b.Property<string>("MailAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MobilePhonePrefix")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MobilePhoneSuffix")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumberPrefix")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PhoneNumberSuffix")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.UserGroup", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.UserManagement.UserGroup", b =>
                 {
                     b.Property<Guid>("UserGroupId")
                         .ValueGeneratedOnAdd()
@@ -209,7 +175,32 @@ namespace Backend.Database.Migrations
                     b.ToTable("UserGroups");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.UserRight", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.UserManagement.UserGroupRight", b =>
+                {
+                    b.Property<Guid>("UserGroupRightId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Allow")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserGroupRightId");
+
+                    b.HasIndex("UserGroupId");
+
+                    b.ToTable("UserGroupRights");
+                });
+
+            modelBuilder.Entity("Backend.Database.Model.Shared.UserManagement.UserRight", b =>
                 {
                     b.Property<Guid>("UserRightId")
                         .ValueGeneratedOnAdd()
@@ -229,40 +220,40 @@ namespace Backend.Database.Migrations
                     b.ToTable("UserRights");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.BusinessItem", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.BusinessItem", b =>
                 {
-                    b.HasOne("Database.Model.Shared.Address", "Address")
+                    b.HasOne("Backend.Database.Model.Shared.MasterData.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("Database.Model.Shared.Mandator", "Mandator")
+                    b.HasOne("Backend.Database.Model.Shared.MasterData.Mandator", "Mandator")
                         .WithMany("BusinessItemList")
                         .HasForeignKey("MandatorId");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.GroupRight", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.Mandator", b =>
                 {
-                    b.HasOne("Database.Model.Shared.UserGroup", null)
-                        .WithMany("GroupRightList")
-                        .HasForeignKey("UserGroupId");
-                });
-
-            modelBuilder.Entity("Database.Model.Shared.Mandator", b =>
-                {
-                    b.HasOne("Database.Model.Shared.Address", "Address")
+                    b.HasOne("Backend.Database.Model.Shared.MasterData.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
                 });
 
-            modelBuilder.Entity("Database.Model.Shared.Person", b =>
+            modelBuilder.Entity("Backend.Database.Model.Shared.MasterData.Person", b =>
                 {
-                    b.HasOne("Database.Model.Shared.Address", "Address")
+                    b.HasOne("Backend.Database.Model.Shared.MasterData.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("Database.Model.Shared.BusinessItem", "BusinessItem")
+                    b.HasOne("Backend.Database.Model.Shared.MasterData.BusinessItem", "BusinessItem")
                         .WithMany("PersonList")
                         .HasForeignKey("BusinessItemId");
+                });
+
+            modelBuilder.Entity("Backend.Database.Model.Shared.UserManagement.UserGroupRight", b =>
+                {
+                    b.HasOne("Backend.Database.Model.Shared.UserManagement.UserGroup", null)
+                        .WithMany("GroupRightList")
+                        .HasForeignKey("UserGroupId");
                 });
 #pragma warning restore 612, 618
         }
