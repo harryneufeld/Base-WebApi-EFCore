@@ -8,52 +8,52 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
 using Backend.Database.Model.Shared.UserManagement;
 
-namespace Service.Controllers
+namespace Backend.Service.Controller.MasterDataController
 {
     [Route("[controller]")]
     [ApiController]
-    public class UserGroupRightController : ControllerBase
+    public class UserGroupController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
 
-        public UserGroupRightController(MainDatabaseContext context)
+        public UserGroupController(MainDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: api/UserGroupRight
+        // GET: api/UserGroup
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserGroupRight>>> GetUserGroupRights()
+        public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
         {
-            return await _context.UserGroupRights.ToListAsync();
+            return await _context.UserGroups.ToListAsync();
         }
 
-        // GET: api/UserGroupRight/5
+        // GET: api/UserGroup/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserGroupRight>> GetUserGroupRight(Guid id)
+        public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
         {
-            var UserGroupRight = await _context.UserGroupRights.FindAsync(id);
+            var userGroup = await _context.UserGroups.FindAsync(id);
 
-            if (UserGroupRight == null)
+            if (userGroup == null)
             {
                 return NotFound();
             }
 
-            return UserGroupRight;
+            return userGroup;
         }
 
-        // PUT: api/UserGroupRight/5
+        // PUT: api/UserGroup/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserGroupRight(Guid id, UserGroupRight UserGroupRight)
+        public async Task<IActionResult> PutUserGroup(Guid id, UserGroup userGroup)
         {
-            if (id != UserGroupRight.UserGroupRightId)
+            if (id != userGroup.UserGroupId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(UserGroupRight).State = EntityState.Modified;
+            _context.Entry(userGroup).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Service.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserGroupRightExists(id))
+                if (!UserGroupExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace Service.Controllers
             return NoContent();
         }
 
-        // POST: api/UserGroupRight
+        // POST: api/UserGroup
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<UserGroupRight>> PostUserGroupRight(UserGroupRight UserGroupRight)
+        public async Task<ActionResult<UserGroup>> PostUserGroup(UserGroup userGroup)
         {
-            _context.UserGroupRights.Add(UserGroupRight);
+            _context.UserGroups.Add(userGroup);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserGroupRight", new { id = UserGroupRight.UserGroupRightId }, UserGroupRight);
+            return CreatedAtAction("GetUserGroup", new { id = userGroup.UserGroupId }, userGroup);
         }
 
-        // DELETE: api/UserGroupRight/5
+        // DELETE: api/UserGroup/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserGroupRight>> DeleteUserGroupRight(Guid id)
+        public async Task<ActionResult<UserGroup>> DeleteUserGroup(Guid id)
         {
-            var UserGroupRight = await _context.UserGroupRights.FindAsync(id);
-            if (UserGroupRight == null)
+            var userGroup = await _context.UserGroups.FindAsync(id);
+            if (userGroup == null)
             {
                 return NotFound();
             }
 
-            _context.UserGroupRights.Remove(UserGroupRight);
+            _context.UserGroups.Remove(userGroup);
             await _context.SaveChangesAsync();
 
-            return UserGroupRight;
+            return userGroup;
         }
 
-        private bool UserGroupRightExists(Guid id)
+        private bool UserGroupExists(Guid id)
         {
-            return _context.UserGroupRights.Any(e => e.UserGroupRightId == id);
+            return _context.UserGroups.Any(e => e.UserGroupId == id);
         }
     }
 }

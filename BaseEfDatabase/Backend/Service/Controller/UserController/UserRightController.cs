@@ -6,54 +6,54 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
-using Backend.Database.Model.Shared.MasterData;
+using Backend.Database.Model.Shared.UserManagement;
 
-namespace Service.Controllers
+namespace Backend.Service.Controller.MasterDataController
 {
     [Route("[controller]")]
     [ApiController]
-    public class AddressController : ControllerBase
+    public class UserRightController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
 
-        public AddressController(MainDatabaseContext context)
+        public UserRightController(MainDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: api/Address
+        // GET: api/UserRight
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
+        public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
         {
-            return await _context.Addresses.ToListAsync();
+            return await _context.UserRights.ToListAsync();
         }
 
-        // GET: api/Address/5
+        // GET: api/UserRight/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(Guid id)
+        public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
         {
-            var address = await _context.Addresses.FindAsync(id);
+            var userRight = await _context.UserRights.FindAsync(id);
 
-            if (address == null)
+            if (userRight == null)
             {
                 return NotFound();
             }
 
-            return address;
+            return userRight;
         }
 
-        // PUT: api/Address/5
+        // PUT: api/UserRight/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(Guid id, Address address)
+        public async Task<IActionResult> PutUserRight(Guid id, UserRight userRight)
         {
-            if (id != address.AddressId)
+            if (id != userRight.UserRightId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(address).State = EntityState.Modified;
+            _context.Entry(userRight).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace Service.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AddressExists(id))
+                if (!UserRightExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,37 @@ namespace Service.Controllers
             return NoContent();
         }
 
-        // POST: api/Address
+        // POST: api/UserRight
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(Address address)
+        public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
         {
-            _context.Addresses.Add(address);
+            _context.UserRights.Add(userRight);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
+            return CreatedAtAction("GetUserRight", new { id = userRight.UserRightId }, userRight);
         }
 
-        // DELETE: api/Address/5
+        // DELETE: api/UserRight/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Address>> DeleteAddress(Guid id)
+        public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
         {
-            var address = await _context.Addresses.FindAsync(id);
-            if (address == null)
+            var userRight = await _context.UserRights.FindAsync(id);
+            if (userRight == null)
             {
                 return NotFound();
             }
 
-            _context.Addresses.Remove(address);
+            _context.UserRights.Remove(userRight);
             await _context.SaveChangesAsync();
 
-            return address;
+            return userRight;
         }
 
-        private bool AddressExists(Guid id)
+        private bool UserRightExists(Guid id)
         {
-            return _context.Addresses.Any(e => e.AddressId == id);
+            return _context.UserRights.Any(e => e.UserRightId == id);
         }
     }
 }

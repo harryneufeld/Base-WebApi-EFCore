@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
 using Backend.Database.Model.Shared.UserManagement;
 
-namespace Service.Controllers
+namespace Backend.Service.Controller.MasterDataController
 {
     [Route("[controller]")]
     [ApiController]
