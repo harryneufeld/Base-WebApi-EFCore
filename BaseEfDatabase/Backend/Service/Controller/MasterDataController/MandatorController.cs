@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
 using Backend.Database.Model.Shared.MasterData;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -15,10 +16,12 @@ namespace Backend.Service.Controller.MasterDataController
     public class MandatorController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
+        private readonly ILogger _logger;
 
-        public MandatorController(MainDatabaseContext context)
+        public MandatorController(ILogger<MandatorController> logger, MainDatabaseContext context)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Mandator

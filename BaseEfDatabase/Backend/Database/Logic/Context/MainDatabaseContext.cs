@@ -2,11 +2,13 @@
 using Backend.Database.Model.Shared.MasterData;
 using Backend.Database.Model.Shared.UserManagement;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Database.Logic.Context
 {
     public class MainDatabaseContext : BaseDatabaseContext
     {
+        private readonly ILoggerFactory _loggerFactory;
         public DbSet<Mandator> Mandators { get; set; }
         public DbSet<BusinessItem> BusinessItems { get; set; }
         public DbSet<Person> Persons { get; set; }
@@ -16,9 +18,18 @@ namespace Backend.Database.Logic.Context
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<UserGroupRight> UserGroupRights { get; set; }
 
-        public MainDatabaseContext()
+        public MainDatabaseContext(ILoggerFactory loggerFactory)
         {
+            _loggerFactory = loggerFactory;
             Database.Migrate();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                  .UseLoggerFactory(_loggerFactory);
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

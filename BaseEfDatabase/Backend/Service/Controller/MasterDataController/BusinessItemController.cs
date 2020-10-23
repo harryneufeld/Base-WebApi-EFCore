@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
 using Backend.Database.Model.Shared.MasterData;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -15,10 +16,12 @@ namespace Backend.Service.Controller.MasterDataController
     public class BusinessItemController : ControllerBase
     {
         private readonly MainDatabaseContext _context;
+        private readonly ILogger _logger;
 
-        public BusinessItemController(MainDatabaseContext context)
+        public BusinessItemController(ILogger<BusinessItemController> logger, MainDatabaseContext context)
         {
             _context = context;
+            _logger = logger;
         }
 
         #region GET
@@ -72,6 +75,7 @@ namespace Backend.Service.Controller.MasterDataController
         }
         #endregion
 
+        #region PUT
         // PUT: BusinessItem/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -103,19 +107,29 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region POST
         // POST: BusinessItem
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<BusinessItem>> PostBusinessItem(BusinessItem businessItem)
         {
-            _context.BusinessItems.Add(businessItem);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.BusinessItems.Add(businessItem);
+                await _context.SaveChangesAsync();
+            } catch (Exception e)
+            {
+                _logger.LogError(e,$"POST: PostBusinessItem: '{businessItem.Name}' with Id '{businessItem.BusinessItemId}'");
+            }
 
             return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
         }
+        #endregion
 
+        #region DELETE
         // DELETE: BusinessItem/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
@@ -131,6 +145,7 @@ namespace Backend.Service.Controller.MasterDataController
 
             return businessItem;
         }
+        #endregion
 
         private bool BusinessItemExists(Guid id)
         {
