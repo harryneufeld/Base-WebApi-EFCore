@@ -20,4 +20,13 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.Model\Shared.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EntityConfiguration\UserData\" />
+    <Folder Include="EntityMapping\" />
+  </ItemGroup>
+
 </Project>

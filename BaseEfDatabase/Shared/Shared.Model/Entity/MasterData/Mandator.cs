@@ -1,8 +1,8 @@
-﻿using Backend.Database.Model.Base;
+﻿using Shared.Model.Base;
 using System;
 using System.Collections.Generic;
 
-namespace Backend.Database.Model.Shared.MasterData
+namespace Shared.Model.Entity.MasterData
 {
     public class Mandator : BaseModel
     {

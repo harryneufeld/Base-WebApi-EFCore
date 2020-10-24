@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Database.Logic.Base
+namespace Backend.Database.Base
 {
-    public abstract class BaseDatabaseContext : DbContext
+    public abstract class DatabaseContextBase : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

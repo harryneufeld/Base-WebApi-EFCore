@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Backend.Database.Model.Shared.MasterData
+namespace Shared.Model.Entity.MasterData
 {
     public class Address
     {

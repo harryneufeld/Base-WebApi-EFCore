@@ -17,11 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.Model\Shared.Model.csproj" />
     <ProjectReference Include="..\Database\Backend.Database.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Base\" />
   </ItemGroup>
 
 

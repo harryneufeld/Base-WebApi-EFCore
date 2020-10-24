@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 
-namespace Backend.Shared.Logic.Helper.Password
+namespace Backend.Logic.Helper.Password
 {
     /// <summary>
     /// Password Hasher Class.

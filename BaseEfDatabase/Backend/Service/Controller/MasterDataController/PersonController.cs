@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Backend.Database.Logic.Context;
-using Backend.Database.Model.Shared.MasterData;
+using Backend.Database.Context;
+using Shared.Model.Entity.MasterData;
 using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController

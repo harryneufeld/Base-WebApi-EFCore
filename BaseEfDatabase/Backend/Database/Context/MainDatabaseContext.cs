@@ -1,14 +1,19 @@
-﻿using Backend.Database.Logic.Base;
-using Backend.Database.Model.Shared.MasterData;
-using Backend.Database.Model.Shared.UserManagement;
+﻿using Backend.Database.Base;
+using Shared.Model.Entity.MasterData;
+using Shared.Model.Entity.UserData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Backend.Database.EntityConfiguration.MasterData;
 
-namespace Backend.Database.Logic.Context
+namespace Backend.Database.Context
 {
-    public class MainDatabaseContext : BaseDatabaseContext
+    public class MainDatabaseContext : DatabaseContextBase
     {
+        #region Fields
         private readonly ILoggerFactory _loggerFactory;
+        #endregion
+
+        #region Properties
         public DbSet<Mandator> Mandators { get; set; }
         public DbSet<BusinessItem> BusinessItems { get; set; }
         public DbSet<Person> Persons { get; set; }
@@ -17,13 +22,17 @@ namespace Backend.Database.Logic.Context
         public DbSet<UserRight> UserRights { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<UserGroupRight> UserGroupRights { get; set; }
+        #endregion
 
+        #region Contructor
         public MainDatabaseContext(ILoggerFactory loggerFactory)
         {
             _loggerFactory = loggerFactory;
             Database.Migrate();
         }
+        #endregion
 
+        #region Methods
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
@@ -42,8 +51,12 @@ namespace Backend.Database.Logic.Context
             //    .HasPrincipalKey(c => c.PostalCode);
             //modelBuilder.Entity<City>()
             //    .HasKey(c => c.PostalCode);
-
+            
             base.OnModelCreating(modelBuilder);
+
+            //// Apply EntityConfigurations
+            //modelBuilder.ApplyConfiguration(new BusinessItemConfiguration());
         }
+        #endregion
     }
 }

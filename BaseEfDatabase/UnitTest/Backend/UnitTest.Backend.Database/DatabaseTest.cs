@@ -1,8 +1,10 @@
 using NUnit.Framework;
-using Backend.Database.Logic.Context;
-using Backend.Database.Model.Shared.MasterData;
+using Backend.Database.Context;
+using Shared.Model.Entity.MasterData;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace UnitTest.Backend.Database
 {
@@ -16,17 +18,17 @@ namespace UnitTest.Backend.Database
         [Test]
         public void AddBusinessItemTest()
         {
+            ILoggerFactory logger = new Mock<ILoggerFactory>().Object;
+
             bool IsSuccessful;
-            var context = new MainDatabaseContext();
+            var context = new MainDatabaseContext(logger);
             var testItem = new BusinessItem();
 
             var businessItem = new BusinessItem()
             {
-                BusinessItemId = new System.Guid(),
                 Name = "ThisIsATestItem",
                 Address = new Address()
                 {
-                    AddressId = new System.Guid(),
                     City = "Bonn",
                     PostalCode = "53117",
                     StreetName = "Pariser Straﬂe",
