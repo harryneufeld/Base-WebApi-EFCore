@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Backend.Database.Logic.Context;
-using Backend.Database.Model.Shared.UserManagement;
+using Backend.Database.Context;
+using Shared.Model.Entity.UserData;
 
 namespace Backend.Service.Controller.MasterDataController
 {

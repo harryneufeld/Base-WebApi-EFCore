@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Backend.Database.Model.Shared.MasterData
+namespace Backend.Shared.Model.Entity.MasterData
 {
     public class Person
     {

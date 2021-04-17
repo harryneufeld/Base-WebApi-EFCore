@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Backend.Database.Model.Shared.MasterData
+namespace Backend.Shared.Model.Entity.MasterData
 {
     public class Mandator : BaseModel
     {

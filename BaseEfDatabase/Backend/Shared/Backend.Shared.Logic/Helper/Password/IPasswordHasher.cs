@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Backend.Shared.Logic.Helper.Password
+namespace Backend.Logic.Helper.Password
 {
     public interface IPasswordHasher
     {

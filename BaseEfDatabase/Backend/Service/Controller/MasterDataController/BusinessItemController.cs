@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Backend.Database.Logic.Context;
-using Backend.Database.Model.Shared.MasterData;
+using Backend.Database.Context;
+using Shared.Model.Entity.MasterData;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -14,10 +15,12 @@ namespace Backend.Service.Controller.MasterDataController
     public partial class BusinessItemController : ControllerBase
     {
         private readonly MainDatabaseContext context;
+        private readonly ILogger logger;
 
-        public BusinessItemController(MainDatabaseContext context)
+        public BusinessItemController(ILogger<BusinessItemController> logger, MainDatabaseContext context)
         {
             this.context = context;
+            this.logger = logger;
         }
 
         #region get
@@ -112,8 +115,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<BusinessItem>> PostBusinessItem(BusinessItem businessItem)
         {
-            context.BusinessItems.Add(businessItem);
-            await context.SaveChangesAsync();
+            try
+            {
+                _context.BusinessItems.Add(businessItem);
+                await _context.SaveChangesAsync();
+            } catch (Exception e)
+            {
+                _logger.LogError(e,$"POST: PostBusinessItem: '{businessItem.Name}' with Id '{businessItem.BusinessItemId}'");
+            }
 
             return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
         }

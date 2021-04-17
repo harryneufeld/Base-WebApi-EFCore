@@ -1,4 +1,4 @@
-﻿namespace Backend.Shared.Logic.Helper.Password
+﻿namespace Backend.Logic.Helper.Password
 {
     public sealed class HashingOptions
     {

@@ -13,9 +13,8 @@ namespace Backend.Database.Migrations
                 {
                     AddressId = table.Column<Guid>(nullable: false),
                     StreetName = table.Column<string>(nullable: true),
-                    StreetNumber = table.Column<int>(nullable: false),
-                    PostalCode = table.Column<int>(nullable: false),
-                    IsMainAddress = table.Column<bool>(nullable: false),
+                    StreetNumber = table.Column<string>(nullable: true),
+                    PostalCode = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -59,10 +58,7 @@ namespace Backend.Database.Migrations
                     Password = table.Column<string>(nullable: true),
                     Birthday = table.Column<DateTime>(nullable: true),
                     MailAddress = table.Column<string>(nullable: true),
-                    PhoneNumberPrefix = table.Column<int>(nullable: false),
-                    PhoneNumberSuffix = table.Column<int>(nullable: false),
-                    MobilePhonePrefix = table.Column<int>(nullable: false),
-                    MobilePhoneSuffix = table.Column<int>(nullable: false)
+                    PhoneNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,10 +87,10 @@ namespace Backend.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupRights",
+                name: "UserGroupRights",
                 columns: table => new
                 {
-                    GroupRightId = table.Column<Guid>(nullable: false),
+                    UserGroupRightId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     FieldId = table.Column<int>(nullable: false),
                     Allow = table.Column<bool>(nullable: false),
@@ -102,9 +98,9 @@ namespace Backend.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupRights", x => x.GroupRightId);
+                    table.PrimaryKey("PK_UserGroupRights", x => x.UserGroupRightId);
                     table.ForeignKey(
-                        name: "FK_GroupRights_UserGroups_UserGroupId",
+                        name: "FK_UserGroupRights_UserGroups_UserGroupId",
                         column: x => x.UserGroupId,
                         principalTable: "UserGroups",
                         principalColumn: "UserGroupId",
@@ -118,7 +114,8 @@ namespace Backend.Database.Migrations
                     BusinessItemId = table.Column<Guid>(nullable: false),
                     MandatorId = table.Column<Guid>(nullable: true),
                     AddressId = table.Column<Guid>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -178,11 +175,6 @@ namespace Backend.Database.Migrations
                 column: "MandatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupRights_UserGroupId",
-                table: "GroupRights",
-                column: "UserGroupId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Mandators_AddressId",
                 table: "Mandators",
                 column: "AddressId");
@@ -196,15 +188,20 @@ namespace Backend.Database.Migrations
                 name: "IX_Persons_BusinessItemId",
                 table: "Persons",
                 column: "BusinessItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGroupRights_UserGroupId",
+                table: "UserGroupRights",
+                column: "UserGroupId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupRights");
+                name: "Persons");
 
             migrationBuilder.DropTable(
-                name: "Persons");
+                name: "UserGroupRights");
 
             migrationBuilder.DropTable(
                 name: "UserRights");
@@ -213,10 +210,10 @@ namespace Backend.Database.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "UserGroups");
+                name: "BusinessItems");
 
             migrationBuilder.DropTable(
-                name: "BusinessItems");
+                name: "UserGroups");
 
             migrationBuilder.DropTable(
                 name: "Mandators");

@@ -67,11 +67,8 @@ namespace Backend.Service
 
             // Api Configuration
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
