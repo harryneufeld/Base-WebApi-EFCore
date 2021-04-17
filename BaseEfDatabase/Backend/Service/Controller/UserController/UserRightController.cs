@@ -25,14 +25,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
         {
-            return await context.UserRights.ToListAsync();
+            return await this.context.UserRights.ToListAsync();
         }
 
         // GET: api/UserRight/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
         {
-            var userRight = await context.UserRights.FindAsync(id);
+            var userRight = await this.context.UserRights.FindAsync(id);
 
             if (userRight == null)
             {
@@ -55,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(userRight).State = EntityState.Modified;
+            this.context.Entry(userRight).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,8 +84,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
         {
-            context.UserRights.Add(userRight);
-            await context.SaveChangesAsync();
+            this.context.UserRights.Add(userRight);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserRight", new { id = userRight.UserRightId }, userRight);
         }
@@ -96,14 +96,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
         {
-            var userRight = await context.UserRights.FindAsync(id);
+            var userRight = await this.context.UserRights.FindAsync(id);
             if (userRight == null)
             {
                 return NotFound();
             }
 
-            context.UserRights.Remove(userRight);
-            await context.SaveChangesAsync();
+            this.context.UserRights.Remove(userRight);
+            await this.context.SaveChangesAsync();
 
             return userRight;
         }
@@ -111,7 +111,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool UserRightExists(Guid id)
         {
-            return context.UserRights.Any(e => e.UserRightId == id);
+            return this.context.UserRights.Any(e => e.UserRightId == id);
         }
     }
 }

@@ -25,14 +25,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await context.Users.ToListAsync();
+            return await this.context.Users.ToListAsync();
         }
 
         // GET: User/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            var user = await context.Users.FindAsync(id);
+            var user = await this.context.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -47,7 +47,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByName(string name)
         {
-            var userList = await context.Users.Where(u => u.Name.Contains(name) || u.LastName.Contains(name)).ToListAsync();
+            var userList = await this.context.Users.Where(u => u.Name.Contains(name) || u.LastName.Contains(name)).ToListAsync();
 
             if (userList == null)
             {
@@ -62,7 +62,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Mail/{MailAddress}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByMail(string mailAddress)
         {
-            var userList = await context.Users.Where(u => u.MailAddress == mailAddress).ToListAsync();
+            var userList = await this.context.Users.Where(u => u.MailAddress == mailAddress).ToListAsync();
 
             if (userList == null)
             {
@@ -85,11 +85,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(user).State = EntityState.Modified;
+            this.context.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -114,8 +114,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
+            this.context.Users.Add(user);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
@@ -126,14 +126,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(Guid id)
         {
-            var user = await context.Users.FindAsync(id);
+            var user = await this.context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            context.Users.Remove(user);
-            await context.SaveChangesAsync();
+            this.context.Users.Remove(user);
+            await this.context.SaveChangesAsync();
 
             return user;
         }
@@ -142,7 +142,7 @@ namespace Backend.Service.Controller.MasterDataController
         #region Private Methods
         private bool UserExists(Guid id)
         {
-            return context.Users.Any(e => e.UserId == id);
+            return this.context.Users.Any(e => e.UserId == id);
         }
         #endregion
     }

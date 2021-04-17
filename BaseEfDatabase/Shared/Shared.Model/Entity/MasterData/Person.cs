@@ -6,22 +6,22 @@ namespace Shared.Model.Entity.MasterData
 {
     public class Person
     {
-        private Guid _personId;
-        private BusinessItem _businessItem;
-        private string _firstName;
-        private string _middleName;
-        private string _lastName;
-        private Address _address;
-        private string _mail;
-        private string _phoneNumber;
+        private Guid personId;
+        private BusinessItem businessItem;
+        private string firstName;
+        private string middleName;
+        private string lastName;
+        private Address address;
+        private string mail;
+        private string phoneNumber;
 
-        public Guid PersonId{ get => _personId; set => _personId = value; }
-        public BusinessItem BusinessItem { get => _businessItem; set => _businessItem = value; }
-        public string FirstName { get => _firstName; set => _firstName = value; }
-        public string MiddleName { get => _middleName; set => _middleName = value; }
-        public string LastName { get => _lastName; set => _lastName = value; }
-        public Address Address { get => _address; set => _address = value; }
-        public string Mail { get => _mail; set => _mail = value; }
-        public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
+        public Guid PersonId{ get => personId; set => personId = value; }
+        public BusinessItem BusinessItem { get => businessItem; set => businessItem = value; }
+        public string FirstName { get => firstName; set => firstName = value; }
+        public string MiddleName { get => middleName; set => middleName = value; }
+        public string LastName { get => lastName; set => lastName = value; }
+        public Address Address { get => address; set => address = value; }
+        public string Mail { get => mail; set => mail = value; }
+        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
     }
 }

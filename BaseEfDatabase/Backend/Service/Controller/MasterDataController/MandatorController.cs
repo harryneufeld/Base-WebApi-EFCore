@@ -28,14 +28,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mandator>>> GetMandators()
         {
-            return await context.Mandators.ToListAsync();
+            return await this.context.Mandators.ToListAsync();
         }
 
         // GET: api/Mandator/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Mandator>> GetMandator(Guid id)
         {
-            var mandator = await context.Mandators.FindAsync(id);
+            var mandator = await this.context.Mandators.FindAsync(id);
 
             if (mandator == null)
             {
@@ -58,11 +58,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(mandator).State = EntityState.Modified;
+            this.context.Entry(mandator).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,8 +87,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<Mandator>> PostMandator(Mandator mandator)
         {
-            context.Mandators.Add(mandator);
-            await context.SaveChangesAsync();
+            this.context.Mandators.Add(mandator);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetMandator", new { id = mandator.MandatorId }, mandator);
         }
@@ -99,14 +99,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<Mandator>> DeleteMandator(Guid id)
         {
-            var mandator = await context.Mandators.FindAsync(id);
+            var mandator = await this.context.Mandators.FindAsync(id);
             if (mandator == null)
             {
                 return NotFound();
             }
 
-            context.Mandators.Remove(mandator);
-            await context.SaveChangesAsync();
+            this.context.Mandators.Remove(mandator);
+            await this.context.SaveChangesAsync();
 
             return mandator;
         }
@@ -114,7 +114,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool MandatorExists(Guid id)
         {
-            return context.Mandators.Any(e => e.MandatorId == id);
+            return this.context.Mandators.Any(e => e.MandatorId == id);
         }
     }
 }

@@ -25,14 +25,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserGroupRight>>> GetUserGroupRights()
         {
-            return await context.UserGroupRights.ToListAsync();
+            return await this.context.UserGroupRights.ToListAsync();
         }
 
         // GET: api/UserGroupRight/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGroupRight>> GetUserGroupRight(Guid id)
         {
-            var UserGroupRight = await context.UserGroupRights.FindAsync(id);
+            var UserGroupRight = await this.context.UserGroupRights.FindAsync(id);
 
             if (UserGroupRight == null)
             {
@@ -55,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(UserGroupRight).State = EntityState.Modified;
+            this.context.Entry(UserGroupRight).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,8 +84,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<UserGroupRight>> PostUserGroupRight(UserGroupRight UserGroupRight)
         {
-            context.UserGroupRights.Add(UserGroupRight);
-            await context.SaveChangesAsync();
+            this.context.UserGroupRights.Add(UserGroupRight);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserGroupRight", new { id = UserGroupRight.UserGroupRightId }, UserGroupRight);
         }
@@ -96,14 +96,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserGroupRight>> DeleteUserGroupRight(Guid id)
         {
-            var UserGroupRight = await context.UserGroupRights.FindAsync(id);
+            var UserGroupRight = await this.context.UserGroupRights.FindAsync(id);
             if (UserGroupRight == null)
             {
                 return NotFound();
             }
 
-            context.UserGroupRights.Remove(UserGroupRight);
-            await context.SaveChangesAsync();
+            this.context.UserGroupRights.Remove(UserGroupRight);
+            await this.context.SaveChangesAsync();
 
             return UserGroupRight;
         }
@@ -111,7 +111,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool UserGroupRightExists(Guid id)
         {
-            return context.UserGroupRights.Any(e => e.UserGroupRightId == id);
+            return this.context.UserGroupRights.Any(e => e.UserGroupRightId == id);
         }
     }
 }

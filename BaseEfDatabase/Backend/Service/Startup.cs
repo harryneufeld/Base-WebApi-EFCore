@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Backend.Database.Logic.Context;
+using Backend.Database.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

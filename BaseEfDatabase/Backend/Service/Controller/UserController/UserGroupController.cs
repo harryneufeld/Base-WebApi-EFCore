@@ -25,14 +25,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
         {
-            return await context.UserGroups.ToListAsync();
+            return await this.context.UserGroups.ToListAsync();
         }
 
         // GET: api/UserGroup/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
         {
-            var userGroup = await context.UserGroups.FindAsync(id);
+            var userGroup = await this.context.UserGroups.FindAsync(id);
 
             if (userGroup == null)
             {
@@ -55,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(userGroup).State = EntityState.Modified;
+            this.context.Entry(userGroup).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,8 +84,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<UserGroup>> PostUserGroup(UserGroup userGroup)
         {
-            context.UserGroups.Add(userGroup);
-            await context.SaveChangesAsync();
+            this.context.UserGroups.Add(userGroup);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserGroup", new { id = userGroup.UserGroupId }, userGroup);
         }
@@ -96,14 +96,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserGroup>> DeleteUserGroup(Guid id)
         {
-            var userGroup = await context.UserGroups.FindAsync(id);
+            var userGroup = await this.context.UserGroups.FindAsync(id);
             if (userGroup == null)
             {
                 return NotFound();
             }
 
-            context.UserGroups.Remove(userGroup);
-            await context.SaveChangesAsync();
+            this.context.UserGroups.Remove(userGroup);
+            await this.context.SaveChangesAsync();
 
             return userGroup;
         }
@@ -111,7 +111,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool UserGroupExists(Guid id)
         {
-            return context.UserGroups.Any(e => e.UserGroupId == id);
+            return this.context.UserGroups.Any(e => e.UserGroupId == id);
         }
     }
 }

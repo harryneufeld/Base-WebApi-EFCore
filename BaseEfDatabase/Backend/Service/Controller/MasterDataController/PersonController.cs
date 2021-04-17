@@ -28,14 +28,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
         {
-            return await context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).ToListAsync();
+            return await this.context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).ToListAsync();
         }
 
         // GET: Person/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(Guid id)
         {
-            var person = await context.Persons
+            var person = await this.context.Persons
                 .Include(p => p.Address)
                 .Include(p => p.BusinessItem)
                 .Where(p => p.PersonId == id)
@@ -54,7 +54,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonByName(string name)
         {
-            var personList = await context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).Where(p => 
+            var personList = await this.context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).Where(p => 
                 p.FirstName.Contains(name) ||
                 p.MiddleName.Contains(name) ||
                 p.LastName.Contains(name)).ToListAsync();
@@ -71,7 +71,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Mail/{MailAddress}")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonByMail(string mailAddress)
         {
-            var personList = await context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).Where(p =>
+            var personList = await this.context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).Where(p =>
                 p.Mail == mailAddress).ToListAsync();
 
             if (personList == null)
@@ -94,11 +94,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(person).State = EntityState.Modified;
+            this.context.Entry(person).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -123,8 +123,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            context.Persons.Add(person);
-            await context.SaveChangesAsync();
+            this.context.Persons.Add(person);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetPerson", new { id = person.PersonId }, person);
         }
@@ -135,14 +135,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<Person>> DeletePerson(Guid id)
         {
-            var person = await context.Persons.FindAsync(id);
+            var person = await this.context.Persons.FindAsync(id);
             if (person == null)
             {
                 return NotFound();
             }
 
-            context.Persons.Remove(person);
-            await context.SaveChangesAsync();
+            this.context.Persons.Remove(person);
+            await this.context.SaveChangesAsync();
 
             return person;
         }
@@ -150,7 +150,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool PersonExists(Guid id)
         {
-            return context.Persons.Any(e => e.PersonId == id);
+            return this.context.Persons.Any(e => e.PersonId == id);
         }
     }
 }

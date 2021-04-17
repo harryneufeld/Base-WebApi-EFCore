@@ -1,6 +1,6 @@
 using NUnit.Framework;
-using Backend.Shared.Logic.Helper.Password;
 using Microsoft.Extensions.Options;
+using Backend.Logic.Helper.Password;
 
 namespace UnitTest.Backend.Logic
 {

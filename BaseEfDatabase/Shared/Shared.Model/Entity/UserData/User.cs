@@ -6,25 +6,25 @@ namespace Shared.Model.Entity.UserData
 {
     public class User
     {
-        private Guid _userId;
-        private string _name;
-        private string _lastName;
-        private string _password;
-        private DateTime? _birthday;
-        private UserGroup _userGroup;
-        private IList<UserRight> _userRightList;
-        private string _mailAddress;
-        private string _phoneNumber;
+        private Guid userId;
+        private string name;
+        private string lastName;
+        private string password;
+        private DateTime? birthday;
+        private UserGroup userGroup;
+        private IList<UserRight> userRightList;
+        private string mailAddress;
+        private string phoneNumber;
 
 
-        public string Name { get => _name; set => _name = value; }
-        public string LastName { get => _lastName; set => _lastName = value; }
-        public string Password { get => _password; set { _password = value; }}
-        public DateTime? Birthday { get => _birthday; set => _birthday = value; }
-        public string MailAddress { get => _mailAddress; set => _mailAddress = value; }
-        public Guid UserId { get => _userId; set => _userId = value; }
-        public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
-        internal UserGroup UserGroup { get => _userGroup; set => _userGroup = value; }
-        internal IList<UserRight> UserRightList { get => _userRightList; set => _userRightList = value; }
+        public string Name { get => name; set => name = value; }
+        public string LastName { get => lastName; set => lastName = value; }
+        public string Password { get => password; set { password = value; }}
+        public DateTime? Birthday { get => birthday; set => birthday = value; }
+        public string MailAddress { get => mailAddress; set => mailAddress = value; }
+        public Guid UserId { get => userId; set => userId = value; }
+        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        internal UserGroup UserGroup { get => userGroup; set => userGroup = value; }
+        internal IList<UserRight> UserRightList { get => userRightList; set => userRightList = value; }
     }
 }

@@ -19,8 +19,8 @@ namespace Backend.Service.Controller.MasterDataController
 
         public AddressController(ILogger<AddressController> logger, MainDatabaseContext context)
         {
-            context = context;
-            logger = logger;
+            this.context = context;
+            this.logger = logger;
         }
 
         #region get
@@ -28,14 +28,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            return await context.Addresses.ToListAsync();
+            return await this.context.Addresses.ToListAsync();
         }
 
         // GET: api/Address/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Address>> GetAddress(Guid id)
         {
-            var address = await context.Addresses.FindAsync(id);
+            var address = await this.context.Addresses.FindAsync(id);
 
             if (address == null)
             {
@@ -58,11 +58,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(address).State = EntityState.Modified;
+            this.context.Entry(address).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,8 +87,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<Address>> PostAddress(Address address)
         {
-            context.Addresses.Add(address);
-            await context.SaveChangesAsync();
+            this.context.Addresses.Add(address);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
         }
@@ -99,14 +99,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<Address>> DeleteAddress(Guid id)
         {
-            var address = await context.Addresses.FindAsync(id);
+            var address = await this.context.Addresses.FindAsync(id);
             if (address == null)
             {
                 return NotFound();
             }
 
-            context.Addresses.Remove(address);
-            await context.SaveChangesAsync();
+            this.context.Addresses.Remove(address);
+            await this.context.SaveChangesAsync();
 
             return address;
         }
@@ -114,7 +114,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool AddressExists(Guid id)
         {
-            return context.Addresses.Any(e => e.AddressId == id);
+            return this.context.Addresses.Any(e => e.AddressId == id);
         }
     }
 }

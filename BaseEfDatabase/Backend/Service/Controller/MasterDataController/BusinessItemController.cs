@@ -28,7 +28,7 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
-            return await context.BusinessItems
+            return await this.context.BusinessItems
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -39,7 +39,7 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet("{id}")]
         public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
         {
-            var businessItem = await context.BusinessItems
+            var businessItem = await this.context.BusinessItems
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -58,7 +58,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
         {
-            var businessItem = await context.BusinessItems
+            var businessItem = await this.context.BusinessItems
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -86,11 +86,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            context.Entry(businessItem).State = EntityState.Modified;
+            this.context.Entry(businessItem).State = EntityState.Modified;
 
             try
             {
-                await context.SaveChangesAsync();
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -117,11 +117,11 @@ namespace Backend.Service.Controller.MasterDataController
         {
             try
             {
-                _context.BusinessItems.Add(businessItem);
-                await _context.SaveChangesAsync();
+                this.context.BusinessItems.Add(businessItem);
+                await this.context.SaveChangesAsync();
             } catch (Exception e)
             {
-                _logger.LogError(e,$"POST: PostBusinessItem: '{businessItem.Name}' with Id '{businessItem.BusinessItemId}'");
+                this.logger.LogError(e,$"POST: PostBusinessItem: '{businessItem.Name}' with Id '{businessItem.BusinessItemId}'");
             }
 
             return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
@@ -133,14 +133,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
         {
-            var businessItem = await context.BusinessItems.FindAsync(id);
+            var businessItem = await this.context.BusinessItems.FindAsync(id);
             if (businessItem == null)
             {
                 return NotFound();
             }
 
-            context.BusinessItems.Remove(businessItem);
-            await context.SaveChangesAsync();
+            this.context.BusinessItems.Remove(businessItem);
+            await this.context.SaveChangesAsync();
 
             return businessItem;
         }
@@ -148,7 +148,7 @@ namespace Backend.Service.Controller.MasterDataController
 
         private bool BusinessItemExists(Guid id)
         {
-            return context.BusinessItems.Any(e => e.BusinessItemId == id);
+            return this.context.BusinessItems.Any(e => e.BusinessItemId == id);
         }
     }
 }

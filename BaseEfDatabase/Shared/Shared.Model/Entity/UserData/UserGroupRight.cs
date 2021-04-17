@@ -4,14 +4,14 @@ namespace Shared.Model.Entity.UserData
 {
     public class UserGroupRight
     {
-        private Guid _userGroupRightId;
-        private string _name;
-        private int _fieldId;
-        private bool _allow;
+        private Guid userGroupRightId;
+        private string name;
+        private int fieldId;
+        private bool allow;
 
-        public Guid UserGroupRightId { get => _userGroupRightId; set => _userGroupRightId = value; }
-        public string Name { get => _name; set => _name = value; }
-        public int FieldId { get => _fieldId; set => _fieldId = value; }
-        public bool Allow { get => _allow; set => _allow = value; }
+        public Guid UserGroupRightId { get => userGroupRightId; set => userGroupRightId = value; }
+        public string Name { get => name; set => name = value; }
+        public int FieldId { get => fieldId; set => fieldId = value; }
+        public bool Allow { get => allow; set => allow = value; }
     }
 }
