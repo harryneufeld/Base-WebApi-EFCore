@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -14,11 +13,11 @@ namespace Backend.Service.Controller.MasterDataController
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public UserController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         #region GET
@@ -26,14 +25,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await context.Users.ToListAsync();
         }
 
         // GET: User/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await context.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -48,7 +47,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByName(string name)
         {
-            var userList = await _context.Users.Where(u => u.Name.Contains(name) || u.LastName.Contains(name)).ToListAsync();
+            var userList = await context.Users.Where(u => u.Name.Contains(name) || u.LastName.Contains(name)).ToListAsync();
 
             if (userList == null)
             {
@@ -63,7 +62,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Mail/{MailAddress}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByMail(string mailAddress)
         {
-            var userList = await _context.Users.Where(u => u.MailAddress == mailAddress).ToListAsync();
+            var userList = await context.Users.Where(u => u.MailAddress == mailAddress).ToListAsync();
 
             if (userList == null)
             {
@@ -86,11 +85,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            context.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -115,8 +114,8 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
@@ -127,14 +126,14 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            context.Users.Remove(user);
+            await context.SaveChangesAsync();
 
             return user;
         }
@@ -143,7 +142,7 @@ namespace Backend.Service.Controller.MasterDataController
         #region Private Methods
         private bool UserExists(Guid id)
         {
-            return _context.Users.Any(e => e.UserId == id);
+            return context.Users.Any(e => e.UserId == id);
         }
         #endregion
     }

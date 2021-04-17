@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -14,25 +13,26 @@ namespace Backend.Service.Controller.MasterDataController
     [ApiController]
     public class UserGroupController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public UserGroupController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
+        #region get
         // GET: api/UserGroup
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
         {
-            return await _context.UserGroups.ToListAsync();
+            return await context.UserGroups.ToListAsync();
         }
 
         // GET: api/UserGroup/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
         {
-            var userGroup = await _context.UserGroups.FindAsync(id);
+            var userGroup = await context.UserGroups.FindAsync(id);
 
             if (userGroup == null)
             {
@@ -41,7 +41,9 @@ namespace Backend.Service.Controller.MasterDataController
 
             return userGroup;
         }
+        #endregion
 
+        #region put
         // PUT: api/UserGroup/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -53,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(userGroup).State = EntityState.Modified;
+            context.Entry(userGroup).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,38 +75,43 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region post
         // POST: api/UserGroup
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<UserGroup>> PostUserGroup(UserGroup userGroup)
         {
-            _context.UserGroups.Add(userGroup);
-            await _context.SaveChangesAsync();
+            context.UserGroups.Add(userGroup);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserGroup", new { id = userGroup.UserGroupId }, userGroup);
         }
+        #endregion
 
+        #region delete
         // DELETE: api/UserGroup/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserGroup>> DeleteUserGroup(Guid id)
         {
-            var userGroup = await _context.UserGroups.FindAsync(id);
+            var userGroup = await context.UserGroups.FindAsync(id);
             if (userGroup == null)
             {
                 return NotFound();
             }
 
-            _context.UserGroups.Remove(userGroup);
-            await _context.SaveChangesAsync();
+            context.UserGroups.Remove(userGroup);
+            await context.SaveChangesAsync();
 
             return userGroup;
         }
+        #endregion
 
         private bool UserGroupExists(Guid id)
         {
-            return _context.UserGroups.Any(e => e.UserGroupId == id);
+            return context.UserGroups.Any(e => e.UserGroupId == id);
         }
     }
 }

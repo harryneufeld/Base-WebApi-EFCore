@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -14,25 +13,26 @@ namespace Backend.Service.Controller.MasterDataController
     [ApiController]
     public class AddressController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public AddressController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
+        #region get
         // GET: api/Address
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            return await _context.Addresses.ToListAsync();
+            return await context.Addresses.ToListAsync();
         }
 
         // GET: api/Address/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Address>> GetAddress(Guid id)
         {
-            var address = await _context.Addresses.FindAsync(id);
+            var address = await context.Addresses.FindAsync(id);
 
             if (address == null)
             {
@@ -41,7 +41,9 @@ namespace Backend.Service.Controller.MasterDataController
 
             return address;
         }
+        #endregion
 
+        #region put
         // PUT: api/Address/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -53,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(address).State = EntityState.Modified;
+            context.Entry(address).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,38 +75,43 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region post
         // POST: api/Address
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Address>> PostAddress(Address address)
         {
-            _context.Addresses.Add(address);
-            await _context.SaveChangesAsync();
+            context.Addresses.Add(address);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
         }
+        #endregion
 
+        #region delete
         // DELETE: api/Address/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Address>> DeleteAddress(Guid id)
         {
-            var address = await _context.Addresses.FindAsync(id);
+            var address = await context.Addresses.FindAsync(id);
             if (address == null)
             {
                 return NotFound();
             }
 
-            _context.Addresses.Remove(address);
-            await _context.SaveChangesAsync();
+            context.Addresses.Remove(address);
+            await context.SaveChangesAsync();
 
             return address;
         }
+        #endregion
 
         private bool AddressExists(Guid id)
         {
-            return _context.Addresses.Any(e => e.AddressId == id);
+            return context.Addresses.Any(e => e.AddressId == id);
         }
     }
 }

@@ -4,10 +4,10 @@ namespace Backend.Database.Model.Base
 {
     public class BaseModel
     {
-        private DateTime? _createDate;
-        private DateTime? _editDate;
+        private DateTime? createDate;
+        private DateTime? editDate;
 
-        public DateTime? CreateDate { get => _createDate; set => _createDate = value; }
-        public DateTime? EditDate { get => _editDate; set => _editDate = value; }
+        public DateTime? CreateDate { get => createDate; set => createDate = value; }
+        public DateTime? EditDate { get => editDate; set => editDate = value; }
     }
 }

@@ -5,12 +5,12 @@ namespace Backend.Database.Model.Shared.UserManagement
 {
     public class UserGroup
     {
-        private Guid _userGroupId;
-        private string _name;
-        private IList<UserGroupRight> _groupRightList;
+        private Guid userGroupId;
+        private string name;
+        private IList<UserGroupRight> groupRightList;
 
-        public Guid UserGroupId { get => _userGroupId; set => _userGroupId = value; }
-        public string UserGroupName { get => _name; set => _name = value; }
-        public IList<UserGroupRight> GroupRightList { get => _groupRightList; set => _groupRightList = value; }
+        public Guid UserGroupId { get => userGroupId; set => userGroupId = value; }
+        public string UserGroupName { get => name; set => name = value; }
+        public IList<UserGroupRight> GroupRightList { get => groupRightList; set => groupRightList = value; }
     }
 }

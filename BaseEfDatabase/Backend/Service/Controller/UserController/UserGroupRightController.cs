@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -14,25 +13,26 @@ namespace Backend.Service.Controller.MasterDataController
     [ApiController]
     public class UserGroupRightController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public UserGroupRightController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
+        #region get
         // GET: api/UserGroupRight
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserGroupRight>>> GetUserGroupRights()
         {
-            return await _context.UserGroupRights.ToListAsync();
+            return await context.UserGroupRights.ToListAsync();
         }
 
         // GET: api/UserGroupRight/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGroupRight>> GetUserGroupRight(Guid id)
         {
-            var UserGroupRight = await _context.UserGroupRights.FindAsync(id);
+            var UserGroupRight = await context.UserGroupRights.FindAsync(id);
 
             if (UserGroupRight == null)
             {
@@ -41,7 +41,9 @@ namespace Backend.Service.Controller.MasterDataController
 
             return UserGroupRight;
         }
+        #endregion
 
+        #region put
         // PUT: api/UserGroupRight/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -53,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(UserGroupRight).State = EntityState.Modified;
+            context.Entry(UserGroupRight).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,38 +75,43 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region post
         // POST: api/UserGroupRight
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<UserGroupRight>> PostUserGroupRight(UserGroupRight UserGroupRight)
         {
-            _context.UserGroupRights.Add(UserGroupRight);
-            await _context.SaveChangesAsync();
+            context.UserGroupRights.Add(UserGroupRight);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserGroupRight", new { id = UserGroupRight.UserGroupRightId }, UserGroupRight);
         }
+        #endregion
 
+        #region delete
         // DELETE: api/UserGroupRight/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserGroupRight>> DeleteUserGroupRight(Guid id)
         {
-            var UserGroupRight = await _context.UserGroupRights.FindAsync(id);
+            var UserGroupRight = await context.UserGroupRights.FindAsync(id);
             if (UserGroupRight == null)
             {
                 return NotFound();
             }
 
-            _context.UserGroupRights.Remove(UserGroupRight);
-            await _context.SaveChangesAsync();
+            context.UserGroupRights.Remove(UserGroupRight);
+            await context.SaveChangesAsync();
 
             return UserGroupRight;
         }
+        #endregion
 
         private bool UserGroupRightExists(Guid id)
         {
-            return _context.UserGroupRights.Any(e => e.UserGroupRightId == id);
+            return context.UserGroupRights.Any(e => e.UserGroupRightId == id);
         }
     }
 }

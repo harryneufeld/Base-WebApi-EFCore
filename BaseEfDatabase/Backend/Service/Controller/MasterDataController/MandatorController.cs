@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -14,25 +13,26 @@ namespace Backend.Service.Controller.MasterDataController
     [ApiController]
     public class MandatorController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public MandatorController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
+        #region get
         // GET: api/Mandator
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mandator>>> GetMandators()
         {
-            return await _context.Mandators.ToListAsync();
+            return await context.Mandators.ToListAsync();
         }
 
         // GET: api/Mandator/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Mandator>> GetMandator(Guid id)
         {
-            var mandator = await _context.Mandators.FindAsync(id);
+            var mandator = await context.Mandators.FindAsync(id);
 
             if (mandator == null)
             {
@@ -41,7 +41,9 @@ namespace Backend.Service.Controller.MasterDataController
 
             return mandator;
         }
+        #endregion
 
+        #region put
         // PUT: api/Mandator/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -53,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(mandator).State = EntityState.Modified;
+            context.Entry(mandator).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,38 +75,43 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region post
         // POST: api/Mandator
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Mandator>> PostMandator(Mandator mandator)
         {
-            _context.Mandators.Add(mandator);
-            await _context.SaveChangesAsync();
+            context.Mandators.Add(mandator);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetMandator", new { id = mandator.MandatorId }, mandator);
         }
+        #endregion
 
+        #region delete
         // DELETE: api/Mandator/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Mandator>> DeleteMandator(Guid id)
         {
-            var mandator = await _context.Mandators.FindAsync(id);
+            var mandator = await context.Mandators.FindAsync(id);
             if (mandator == null)
             {
                 return NotFound();
             }
 
-            _context.Mandators.Remove(mandator);
-            await _context.SaveChangesAsync();
+            context.Mandators.Remove(mandator);
+            await context.SaveChangesAsync();
 
             return mandator;
         }
+        #endregion
 
         private bool MandatorExists(Guid id)
         {
-            return _context.Mandators.Any(e => e.MandatorId == id);
+            return context.Mandators.Any(e => e.MandatorId == id);
         }
     }
 }

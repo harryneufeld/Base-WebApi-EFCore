@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -12,32 +11,32 @@ namespace Backend.Service.Controller.MasterDataController
 {
     [Route("[controller]")]
     [ApiController]
-    public class BusinessItemController : ControllerBase
+    public partial class BusinessItemController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public BusinessItemController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        #region GET
+        #region get
         // GET: BusinessItem
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
-            return await _context.BusinessItems
+            return await context.BusinessItems
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
                 .ToListAsync();
         }
 
-        // GET: BusinessItem/5
+        // GET: BusinessItem/123
         [HttpGet("{id}")]
         public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
         {
-            var businessItem = await _context.BusinessItems
+            var businessItem = await context.BusinessItems
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -56,7 +55,7 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
         {
-            var businessItem = await _context.BusinessItems
+            var businessItem = await context.BusinessItems
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -72,7 +71,8 @@ namespace Backend.Service.Controller.MasterDataController
         }
         #endregion
 
-        // PUT: BusinessItem/5
+        #region put
+        // PUT: BusinessItem/123
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -83,11 +83,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(businessItem).State = EntityState.Modified;
+            context.Entry(businessItem).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -103,38 +103,43 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region post
         // POST: BusinessItem
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<BusinessItem>> PostBusinessItem(BusinessItem businessItem)
         {
-            _context.BusinessItems.Add(businessItem);
-            await _context.SaveChangesAsync();
+            context.BusinessItems.Add(businessItem);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
         }
+        #endregion
 
+        #region delete
         // DELETE: BusinessItem/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
         {
-            var businessItem = await _context.BusinessItems.FindAsync(id);
+            var businessItem = await context.BusinessItems.FindAsync(id);
             if (businessItem == null)
             {
                 return NotFound();
             }
 
-            _context.BusinessItems.Remove(businessItem);
-            await _context.SaveChangesAsync();
+            context.BusinessItems.Remove(businessItem);
+            await context.SaveChangesAsync();
 
             return businessItem;
         }
+        #endregion
 
         private bool BusinessItemExists(Guid id)
         {
-            return _context.BusinessItems.Any(e => e.BusinessItemId == id);
+            return context.BusinessItems.Any(e => e.BusinessItemId == id);
         }
     }
 }

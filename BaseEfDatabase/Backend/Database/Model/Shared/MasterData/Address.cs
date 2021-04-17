@@ -4,18 +4,18 @@ namespace Backend.Database.Model.Shared.MasterData
 {
     public class Address
     {
-        private Guid _addressId;
-        private bool _IsMainAddress;
-        private string _streetName;
-        private int _streetNumber;
-        private int _postalCode;
-        private string _city;
+        private Guid addressId;
+        private bool isMainAddress;
+        private string streetName;
+        private int streetNumber;
+        private int postalCode;
+        private string city;
 
-        public Guid AddressId { get => _addressId; set => _addressId = value; }
-        public string StreetName { get => _streetName; set => _streetName = value; }
-        public int StreetNumber { get => _streetNumber; set => _streetNumber = value; }
-        public int PostalCode { get => _postalCode; set => _postalCode = value; }
-        public bool IsMainAddress { get => _IsMainAddress; set => _IsMainAddress = value; }
-        public string City { get => _city; set => _city = value; }
+        public Guid AddressId { get => addressId; set => addressId = value; }
+        public string StreetName { get => streetName; set => streetName = value; }
+        public int StreetNumber { get => streetNumber; set => streetNumber = value; }
+        public int PostalCode { get => postalCode; set => postalCode = value; }
+        public bool IsMainAddress { get => isMainAddress; set => isMainAddress = value; }
+        public string City { get => city; set => city = value; }
     }
 }

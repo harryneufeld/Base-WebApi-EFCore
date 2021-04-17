@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Logic.Context;
@@ -14,25 +13,26 @@ namespace Backend.Service.Controller.MasterDataController
     [ApiController]
     public class UserRightController : ControllerBase
     {
-        private readonly MainDatabaseContext _context;
+        private readonly MainDatabaseContext context;
 
         public UserRightController(MainDatabaseContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
+        #region get
         // GET: api/UserRight
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
         {
-            return await _context.UserRights.ToListAsync();
+            return await context.UserRights.ToListAsync();
         }
 
         // GET: api/UserRight/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
         {
-            var userRight = await _context.UserRights.FindAsync(id);
+            var userRight = await context.UserRights.FindAsync(id);
 
             if (userRight == null)
             {
@@ -41,7 +41,9 @@ namespace Backend.Service.Controller.MasterDataController
 
             return userRight;
         }
+        #endregion
 
+        #region put
         // PUT: api/UserRight/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -53,11 +55,11 @@ namespace Backend.Service.Controller.MasterDataController
                 return BadRequest();
             }
 
-            _context.Entry(userRight).State = EntityState.Modified;
+            context.Entry(userRight).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,38 +75,43 @@ namespace Backend.Service.Controller.MasterDataController
 
             return NoContent();
         }
+        #endregion
 
+        #region post
         // POST: api/UserRight
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
         {
-            _context.UserRights.Add(userRight);
-            await _context.SaveChangesAsync();
+            context.UserRights.Add(userRight);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserRight", new { id = userRight.UserRightId }, userRight);
         }
+        #endregion
 
+        #region delete
         // DELETE: api/UserRight/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
         {
-            var userRight = await _context.UserRights.FindAsync(id);
+            var userRight = await context.UserRights.FindAsync(id);
             if (userRight == null)
             {
                 return NotFound();
             }
 
-            _context.UserRights.Remove(userRight);
-            await _context.SaveChangesAsync();
+            context.UserRights.Remove(userRight);
+            await context.SaveChangesAsync();
 
             return userRight;
         }
+        #endregion
 
         private bool UserRightExists(Guid id)
         {
-            return _context.UserRights.Any(e => e.UserRightId == id);
+            return context.UserRights.Any(e => e.UserRightId == id);
         }
     }
 }
