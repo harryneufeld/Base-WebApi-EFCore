@@ -10,6 +10,8 @@ using Shared.Model.Entity.MasterData;
 
 namespace Backend.Service.Controller.MasterDataController
 {
+    // TODO: DTOs statt entities verwenden
+    // TODO: Authentication hinzufügen
     [Route("[controller]")]
     [ApiController]
     public class AddressController : ControllerBase

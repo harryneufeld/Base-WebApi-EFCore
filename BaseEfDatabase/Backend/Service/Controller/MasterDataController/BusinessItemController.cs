@@ -10,6 +10,8 @@ using Shared.Model.Entity.MasterData;
 
 namespace Backend.Service.Controller.MasterDataController
 {
+    // TODO: DTOs statt entities verwenden
+    // TODO: Authentication hinzufügen
     [Route("[controller]")]
     [ApiController]
     public partial class BusinessItemController : ControllerBase
@@ -86,14 +88,11 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<IActionResult> PutBusinessItem(Guid id, BusinessItem businessItem)
         {
             if (id != businessItem.BusinessItemId)
-            {
                 return BadRequest();
-            }
-
-            this.context.Entry(businessItem).State = EntityState.Modified;
 
             try
             {
+                this.context.Entry(businessItem).State = EntityState.Modified;
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

@@ -10,6 +10,8 @@ using Shared.Model.Entity.MasterData;
 
 namespace Backend.Service.Controller.MasterDataController
 {
+    // TODO: DTOs statt entities verwenden
+    // TODO: Authentication hinzufügen
     [Route("[controller]")]
     [ApiController]
     public class PersonController : ControllerBase
@@ -92,6 +94,9 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         #region put
+        /// <param name="id"></param>
+        /// <param name="person"></param>
+        /// <returns></returns>
         // PUT: Person/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -126,14 +131,25 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         #region post
+        /// <summary>
+        /// Note: Since entities instead of DTOs are still being used, please leave the Ids blank. 
+        /// Also posting the BusinessItem or the Mandator may not work properly yet.
+        /// </summary>
         // POST: Person
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            this.context.Persons.Add(person);
-            await this.context.SaveChangesAsync();
+            try
+            {
+                this.context.Persons.Add(person);
+                await this.context.SaveChangesAsync();
+            } catch (Exception e)
+            {
+                this.logger.LogError(e, $"POST: PostPerson: '{person.FirstName} {person.LastName}' with Id '{person.PersonId}'");
+            }
+            
             return CreatedAtAction("GetPerson", new { id = person.PersonId }, person);
         }
         #endregion

@@ -10,6 +10,8 @@ using Shared.Model.Entity.UserData;
 
 namespace Backend.Service.Controller.MasterDataController
 {
+    // TODO: DTOs statt entities verwenden
+    // TODO: Authentication hinzufügen
     [Route("[controller]")]
     [ApiController]
     public class UserGroupRightController : ControllerBase

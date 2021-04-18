@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
+    // TODO: DTOs statt entities verwenden
+    // TODO: Authentication hinzufügen
     [Route("[controller]")]
     [ApiController]
     public class UserGroupController : ControllerBase
