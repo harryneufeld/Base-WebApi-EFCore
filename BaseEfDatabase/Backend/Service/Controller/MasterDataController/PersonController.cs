@@ -47,10 +47,7 @@ namespace Backend.Service.Controller.MasterDataController
                 .SingleOrDefaultAsync();
 
             if (person == null)
-            {
                 return NotFound();
-            }
-
             return person;
         }
 
@@ -104,12 +101,8 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<IActionResult> PutPerson(Guid id, Person person)
         {
             if (id != person.PersonId)
-            {
                 return BadRequest();
-            }
-
             this.context.Entry(person).State = EntityState.Modified;
-
             try
             {
                 await this.context.SaveChangesAsync();
@@ -117,13 +110,9 @@ namespace Backend.Service.Controller.MasterDataController
             catch (DbUpdateConcurrencyException)
             {
                 if (!PersonExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
@@ -161,13 +150,9 @@ namespace Backend.Service.Controller.MasterDataController
         {
             var person = await this.context.Persons.FindAsync(id);
             if (person == null)
-            {
                 return NotFound();
-            }
-
             this.context.Persons.Remove(person);
             await this.context.SaveChangesAsync();
-
             return person;
         }
         #endregion

@@ -29,14 +29,12 @@ namespace Backend.Service.Controller.MasterDataController
         // GET: BusinessItem
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
-        {
-            return await this.context.BusinessItems
+            => await this.context.BusinessItems
                 .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
                 .ToListAsync();
-        }
 
         // GET: BusinessItem/123
         [HttpGet("{id}")]
@@ -49,12 +47,8 @@ namespace Backend.Service.Controller.MasterDataController
                 .Include(b => b.Mandator)
                 .Where(b => b.BusinessItemId == id)
                 .FirstAsync();
-
             if (businessItem == null)
-            {
                 return NotFound();
-            }
-
             return businessItem;
         }
 
@@ -70,12 +64,8 @@ namespace Backend.Service.Controller.MasterDataController
                 .Include(b => b.Mandator)
                 .Where(x => x.Name.Contains(name))
                 .ToListAsync();
-
             if (businessItem == null)
-            {
                 return NotFound();
-            }
-
             return businessItem;
         }
         #endregion
@@ -89,7 +79,6 @@ namespace Backend.Service.Controller.MasterDataController
         {
             if (id != businessItem.BusinessItemId)
                 return BadRequest();
-
             try
             {
                 this.context.Entry(businessItem).State = EntityState.Modified;
@@ -98,15 +87,10 @@ namespace Backend.Service.Controller.MasterDataController
             catch (DbUpdateConcurrencyException)
             {
                 if (!BusinessItemExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
-
             return NoContent();
         }
         #endregion
@@ -126,7 +110,6 @@ namespace Backend.Service.Controller.MasterDataController
             {
                 this.logger.LogError(e,$"POST: PostBusinessItem: '{businessItem.Name}' with Id '{businessItem.BusinessItemId}'");
             }
-
             return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
         }
         #endregion
@@ -138,13 +121,9 @@ namespace Backend.Service.Controller.MasterDataController
         {
             var businessItem = await this.context.BusinessItems.FindAsync(id);
             if (businessItem == null)
-            {
                 return NotFound();
-            }
-
             this.context.BusinessItems.Remove(businessItem);
             await this.context.SaveChangesAsync();
-
             return businessItem;
         }
         #endregion

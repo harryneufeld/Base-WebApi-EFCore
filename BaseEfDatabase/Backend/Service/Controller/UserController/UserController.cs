@@ -39,8 +39,7 @@ namespace Backend.Service.Controller.MasterDataController
         {
             var user = await this.context.Users.FindAsync(id);
             if (user == null)
-                return NotFound();
-            
+                return NotFound();            
             return user;
         }
 
@@ -49,18 +48,15 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByName(string name)
         {
-            var userList = await this.context
-                .Users
+            var userList = await this.context.Users
                 .AsNoTracking()
                 .Where(u => 
                     u.Name.Contains(name) || 
                     u.LastName
                 .Contains(name))
                 .ToListAsync();
-
             if (userList == null)
                 return NotFound();
-
             return userList;
         }
 
@@ -69,11 +65,12 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Mail/{MailAddress}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByMail(string mailAddress)
         {
-            var userList = await this.context.Users.Where(u => u.MailAddress == mailAddress).ToListAsync();
-
+            var userList = await this.context.Users
+                .AsNoTracking()
+                .Where(u => u.MailAddress == mailAddress)
+                .ToListAsync();
             if (userList == null)
                 return NotFound();
-
             return userList;
         }
         #endregion
@@ -87,7 +84,6 @@ namespace Backend.Service.Controller.MasterDataController
         {
             if (id != user.UserId)
                 return BadRequest();
-
             this.context.Entry(user).State = EntityState.Modified;
             try
             {
@@ -113,12 +109,14 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.Users.Add(user);
             await this.context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction(
+                "GetUser", 
+                new { id = user.UserId }, 
+                user);
         }
         #endregion
 
-        #region DELETE
+        #region delete
         // DELETE: User/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(Guid id)

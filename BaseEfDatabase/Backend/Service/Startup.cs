@@ -24,8 +24,10 @@ namespace Backend.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MainDatabaseContext>();
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = 
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
             // Swagger registration

@@ -29,11 +29,9 @@ namespace Backend.Service.Controller.MasterDataController
         // GET: api/Address
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
-        {
-            return await this.context.Addresses
+            => await this.context.Addresses
                 .AsNoTracking()
                 .ToListAsync();
-        }
 
         // GET: api/Address/5
         [HttpGet("{id}")]
@@ -43,12 +41,8 @@ namespace Backend.Service.Controller.MasterDataController
                 .AsNoTracking()
                 .Where(x => x.AddressId == id)
                 .SingleOrDefaultAsync();
-
             if (address == null)
-            {
                 return NotFound();
-            }
-
             return address;
         }
         #endregion
@@ -61,12 +55,8 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<IActionResult> PutAddress(Guid id, Address address)
         {
             if (id != address.AddressId)
-            {
                 return BadRequest();
-            }
-
             this.context.Entry(address).State = EntityState.Modified;
-
             try
             {
                 await this.context.SaveChangesAsync();
@@ -74,13 +64,9 @@ namespace Backend.Service.Controller.MasterDataController
             catch (DbUpdateConcurrencyException)
             {
                 if (!AddressExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
@@ -96,8 +82,10 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.Addresses.Add(address);
             await this.context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
+            return CreatedAtAction(
+                "GetAddress", 
+                new { id = address.AddressId }, 
+                address);
         }
         #endregion
 
@@ -108,9 +96,7 @@ namespace Backend.Service.Controller.MasterDataController
         {
             var address = await this.context.Addresses.FindAsync(id);
             if (address == null)
-            {
                 return NotFound();
-            }
             this.context.Addresses.Remove(address);
             await this.context.SaveChangesAsync();
             return address;

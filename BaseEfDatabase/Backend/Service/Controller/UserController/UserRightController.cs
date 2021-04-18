@@ -57,7 +57,6 @@ namespace Backend.Service.Controller.MasterDataController
             if (id != userRight.UserRightId)
                 return BadRequest();
             this.context.Entry(userRight).State = EntityState.Modified;
-
             try
             {
                 await this.context.SaveChangesAsync();
@@ -82,7 +81,6 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.UserRights.Add(userRight);
             await this.context.SaveChangesAsync();
-
             return CreatedAtAction(
                 "GetUserRight", 
                 new { id = userRight.UserRightId }, 

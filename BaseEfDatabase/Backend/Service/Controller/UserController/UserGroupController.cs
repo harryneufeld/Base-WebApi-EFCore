@@ -37,8 +37,10 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet("{id}")]
         public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
         {
-            var userGroup = await this.context.UserGroups.FindAsync(id);
-
+            var userGroup = await this.context.UserGroups
+                .AsNoTracking()
+                .Where(x => x.UserGroupId == id)
+                .SingleOrDefaultAsync();
             if (userGroup == null)
                 return NotFound();
             return userGroup;
@@ -54,9 +56,7 @@ namespace Backend.Service.Controller.MasterDataController
         {
             if (id != userGroup.UserGroupId)
                 return BadRequest();
-
             this.context.Entry(userGroup).State = EntityState.Modified;
-
             try
             {
                 await this.context.SaveChangesAsync();
@@ -81,7 +81,6 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.UserGroups.Add(userGroup);
             await this.context.SaveChangesAsync();
-
             return CreatedAtAction(
                 "GetUserGroup", 
                 new { id = userGroup.UserGroupId }, 
@@ -97,10 +96,8 @@ namespace Backend.Service.Controller.MasterDataController
             var userGroup = await this.context.UserGroups.FindAsync(id);
             if (userGroup == null)
                 return NotFound();
-
             this.context.UserGroups.Remove(userGroup);
             await this.context.SaveChangesAsync();
-
             return userGroup;
         }
         #endregion

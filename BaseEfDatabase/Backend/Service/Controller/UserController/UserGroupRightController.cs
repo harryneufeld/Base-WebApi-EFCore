@@ -41,7 +41,6 @@ namespace Backend.Service.Controller.MasterDataController
                 .AsNoTracking()
                 .Where(x => x.UserGroupRightId == id)
                 .SingleOrDefaultAsync();
-
             if (UserGroupRight == null)
                 return NotFound();
             return UserGroupRight;
@@ -57,9 +56,7 @@ namespace Backend.Service.Controller.MasterDataController
         {
             if (id != UserGroupRight.UserGroupRightId)
                 return BadRequest();
-
             this.context.Entry(UserGroupRight).State = EntityState.Modified;
-
             try
             {
                 await this.context.SaveChangesAsync();
@@ -84,7 +81,6 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.UserGroupRights.Add(UserGroupRight);
             await this.context.SaveChangesAsync();
-
             return CreatedAtAction(
                 "GetUserGroupRight", 
                 new { id = UserGroupRight.UserGroupRightId }, 

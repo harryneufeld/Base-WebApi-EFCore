@@ -41,12 +41,8 @@ namespace Backend.Service.Controller.MasterDataController
                 .AsNoTracking()
                 .Where(x => x.MandatorId == id)
                 .SingleOrDefaultAsync();
-
             if (mandator == null)
-            {
                 return NotFound();
-            }
-
             return mandator;
         }
         #endregion
@@ -59,7 +55,6 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<IActionResult> PutMandator(Mandator mandator)
         {
             this.context.Entry(mandator).State = EntityState.Modified;
-
             try
             {
                 await this.context.SaveChangesAsync();
@@ -67,15 +62,10 @@ namespace Backend.Service.Controller.MasterDataController
             catch (DbUpdateConcurrencyException)
             {
                 if (!this.MandatorExists(mandator.MandatorId))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
-
             return NoContent();
         }
         #endregion
@@ -89,8 +79,10 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.Mandators.Add(mandator);
             await this.context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMandator", new { id = mandator.MandatorId }, mandator);
+            return CreatedAtAction(
+                "GetMandator", 
+                new { id = mandator.MandatorId }, 
+                mandator);
         }
         #endregion
 
@@ -101,12 +93,9 @@ namespace Backend.Service.Controller.MasterDataController
         {
             var mandator = await this.context.Mandators.FindAsync(id);
             if (mandator == null)
-            {
                 return NotFound();
-            }
             this.context.Mandators.Remove(mandator);
             await this.context.SaveChangesAsync();
-
             return mandator;
         }
         #endregion
