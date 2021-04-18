@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Database.Context;
 using Shared.Model.Entity.UserData;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -14,19 +15,21 @@ namespace Backend.Service.Controller.MasterDataController
     public class UserGroupController : ControllerBase
     {
         private readonly MainDatabaseContext context;
+        private readonly ILogger logger;
 
-        public UserGroupController(MainDatabaseContext context)
+        public UserGroupController(ILogger<UserGroupController> logger, MainDatabaseContext context)
         {
             this.context = context;
+            this.logger = logger;
         }
 
         #region get
         // GET: api/UserGroup
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
-        {
-            return await this.context.UserGroups.ToListAsync();
-        }
+            => await this.context.UserGroups
+                .AsNoTracking()
+                .ToListAsync();
 
         // GET: api/UserGroup/5
         [HttpGet("{id}")]
@@ -35,10 +38,7 @@ namespace Backend.Service.Controller.MasterDataController
             var userGroup = await this.context.UserGroups.FindAsync(id);
 
             if (userGroup == null)
-            {
                 return NotFound();
-            }
-
             return userGroup;
         }
         #endregion
@@ -51,9 +51,7 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<IActionResult> PutUserGroup(Guid id, UserGroup userGroup)
         {
             if (id != userGroup.UserGroupId)
-            {
                 return BadRequest();
-            }
 
             this.context.Entry(userGroup).State = EntityState.Modified;
 
@@ -64,15 +62,10 @@ namespace Backend.Service.Controller.MasterDataController
             catch (DbUpdateConcurrencyException)
             {
                 if (!UserGroupExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
-
             return NoContent();
         }
         #endregion
@@ -87,7 +80,10 @@ namespace Backend.Service.Controller.MasterDataController
             this.context.UserGroups.Add(userGroup);
             await this.context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserGroup", new { id = userGroup.UserGroupId }, userGroup);
+            return CreatedAtAction(
+                "GetUserGroup", 
+                new { id = userGroup.UserGroupId }, 
+                userGroup);
         }
         #endregion
 
@@ -98,9 +94,7 @@ namespace Backend.Service.Controller.MasterDataController
         {
             var userGroup = await this.context.UserGroups.FindAsync(id);
             if (userGroup == null)
-            {
                 return NotFound();
-            }
 
             this.context.UserGroups.Remove(userGroup);
             await this.context.SaveChangesAsync();
@@ -110,8 +104,8 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         private bool UserGroupExists(Guid id)
-        {
-            return this.context.UserGroups.Any(e => e.UserGroupId == id);
-        }
+            => this.context.UserGroups
+                .AsNoTracking()
+                .Any(e => e.UserGroupId == id);
     }
 }

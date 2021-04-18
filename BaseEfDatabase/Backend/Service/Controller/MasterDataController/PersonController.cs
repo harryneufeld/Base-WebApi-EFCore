@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
-using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -27,19 +27,22 @@ namespace Backend.Service.Controller.MasterDataController
         // GET: Person
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
-        {
-            return await this.context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).ToListAsync();
-        }
+            => await this.context.Persons
+                .AsNoTracking()
+                .Include(p => p.Address)
+                .Include(p => p.BusinessItem)
+                .ToListAsync();
 
         // GET: Person/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(Guid id)
         {
             var person = await this.context.Persons
+                .AsNoTracking()
                 .Include(p => p.Address)
                 .Include(p => p.BusinessItem)
                 .Where(p => p.PersonId == id)
-                .FirstAsync();
+                .SingleOrDefaultAsync();
 
             if (person == null)
             {
@@ -54,15 +57,18 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Name/{Name}")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonByName(string name)
         {
-            var personList = await this.context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).Where(p => 
-                p.FirstName.Contains(name) ||
-                p.MiddleName.Contains(name) ||
-                p.LastName.Contains(name)).ToListAsync();
+            var personList = await this.context.Persons
+                .AsNoTracking()
+                .Include(p => p.Address)
+                .Include(p => p.BusinessItem)
+                .Where(p => 
+                    p.FirstName.Contains(name) ||
+                    p.MiddleName.Contains(name) ||
+                    p.LastName.Contains(name))
+                .ToListAsync();
 
             if (personList == null)
-            {
                 return NotFound();
-            }
             return personList;
         }
 
@@ -71,13 +77,16 @@ namespace Backend.Service.Controller.MasterDataController
         [Route("Mail/{MailAddress}")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonByMail(string mailAddress)
         {
-            var personList = await this.context.Persons.Include(p => p.Address).Include(p => p.BusinessItem).Where(p =>
-                p.Mail == mailAddress).ToListAsync();
+            var personList = await this.context.Persons
+                .AsNoTracking()
+                .Include(p => p.Address)
+                .Include(p => p.BusinessItem)
+                .Where(p =>
+                    p.Mail == mailAddress)
+                .ToListAsync();
 
             if (personList == null)
-            {
                 return NotFound();
-            }
             return personList;
         }
         #endregion
@@ -125,7 +134,6 @@ namespace Backend.Service.Controller.MasterDataController
         {
             this.context.Persons.Add(person);
             await this.context.SaveChangesAsync();
-
             return CreatedAtAction("GetPerson", new { id = person.PersonId }, person);
         }
         #endregion
@@ -148,9 +156,9 @@ namespace Backend.Service.Controller.MasterDataController
         }
         #endregion
 
-        private bool PersonExists(Guid id)
-        {
-            return this.context.Persons.Any(e => e.PersonId == id);
-        }
+        private bool PersonExists(Guid id) 
+            => this.context.Persons
+                .AsNoTracking()
+                .Any(e => e.PersonId == id);
     }
 }

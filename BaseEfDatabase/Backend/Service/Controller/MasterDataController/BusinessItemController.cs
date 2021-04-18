@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
-using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -29,6 +29,7 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
         {
             return await this.context.BusinessItems
+                .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -40,10 +41,12 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
         {
             var businessItem = await this.context.BusinessItems
+                .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
-                .Where(b => b.BusinessItemId == id).FirstAsync();
+                .Where(b => b.BusinessItemId == id)
+                .FirstAsync();
 
             if (businessItem == null)
             {
@@ -59,6 +62,7 @@ namespace Backend.Service.Controller.MasterDataController
         public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
         {
             var businessItem = await this.context.BusinessItems
+                .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
@@ -147,8 +151,8 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         private bool BusinessItemExists(Guid id)
-        {
-            return this.context.BusinessItems.Any(e => e.BusinessItemId == id);
-        }
+            => this.context.BusinessItems
+                .AsNoTracking()
+                .Any(e => e.BusinessItemId == id);
     }
 }

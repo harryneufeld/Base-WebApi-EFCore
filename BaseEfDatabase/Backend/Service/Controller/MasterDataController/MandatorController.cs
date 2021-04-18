@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
-using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -27,15 +27,18 @@ namespace Backend.Service.Controller.MasterDataController
         // GET: api/Mandator
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mandator>>> GetMandators()
-        {
-            return await this.context.Mandators.ToListAsync();
-        }
+            => await this.context.Mandators
+                .AsNoTracking()
+                .ToListAsync();
 
         // GET: api/Mandator/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Mandator>> GetMandator(Guid id)
         {
-            var mandator = await this.context.Mandators.FindAsync(id);
+            var mandator = await this.context.Mandators
+                .AsNoTracking()
+                .Where(x => x.MandatorId == id)
+                .SingleOrDefaultAsync();
 
             if (mandator == null)
             {
@@ -51,13 +54,8 @@ namespace Backend.Service.Controller.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMandator(Guid id, Mandator mandator)
+        public async Task<IActionResult> PutMandator(Mandator mandator)
         {
-            if (id != mandator.MandatorId)
-            {
-                return BadRequest();
-            }
-
             this.context.Entry(mandator).State = EntityState.Modified;
 
             try
@@ -66,7 +64,7 @@ namespace Backend.Service.Controller.MasterDataController
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MandatorExists(id))
+                if (!this.MandatorExists(mandator.MandatorId))
                 {
                     return NotFound();
                 }
@@ -104,7 +102,6 @@ namespace Backend.Service.Controller.MasterDataController
             {
                 return NotFound();
             }
-
             this.context.Mandators.Remove(mandator);
             await this.context.SaveChangesAsync();
 
@@ -113,8 +110,8 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         private bool MandatorExists(Guid id)
-        {
-            return this.context.Mandators.Any(e => e.MandatorId == id);
-        }
+            => this.context.Mandators
+                .AsNoTracking()
+                .Any(e => e.MandatorId == id);
     }
 }

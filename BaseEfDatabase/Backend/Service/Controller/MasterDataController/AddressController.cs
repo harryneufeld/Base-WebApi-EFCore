@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
-using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
@@ -28,14 +28,19 @@ namespace Backend.Service.Controller.MasterDataController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            return await this.context.Addresses.ToListAsync();
+            return await this.context.Addresses
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         // GET: api/Address/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Address>> GetAddress(Guid id)
         {
-            var address = await this.context.Addresses.FindAsync(id);
+            var address = await this.context.Addresses
+                .AsNoTracking()
+                .Where(x => x.AddressId == id)
+                .SingleOrDefaultAsync();
 
             if (address == null)
             {
@@ -104,17 +109,15 @@ namespace Backend.Service.Controller.MasterDataController
             {
                 return NotFound();
             }
-
             this.context.Addresses.Remove(address);
             await this.context.SaveChangesAsync();
-
             return address;
         }
         #endregion
 
         private bool AddressExists(Guid id)
-        {
-            return this.context.Addresses.Any(e => e.AddressId == id);
-        }
+            => this.context.Addresses
+                .AsNoTracking()
+                .Any(e => e.AddressId == id);
     }
 }
