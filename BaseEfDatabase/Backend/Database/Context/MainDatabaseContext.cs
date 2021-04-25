@@ -15,7 +15,7 @@ namespace Backend.Database.Context
 
         #region Properties
         public DbSet<Mandator> Mandators { get; set; }
-        public DbSet<BusinessItem> BusinessItems { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<User> Users { get; set; }
@@ -55,7 +55,7 @@ namespace Backend.Database.Context
             base.OnModelCreating(modelBuilder);
 
             //// Apply EntityConfigurations
-            //modelBuilder.ApplyConfiguration(new BusinessItemConfiguration());
+            //modelBuilder.ApplyConfiguration(new CompanyConfiguration());
         }
         #endregion
     }

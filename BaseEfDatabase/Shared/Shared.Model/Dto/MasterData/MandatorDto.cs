@@ -8,10 +8,10 @@ namespace Shared.Model.Dto.MasterData
     {
         private string name;
         private AddressDto address;
-        private List<BusinessItemDto> businessItemList;
+        private List<CompanyDto> companyList;
 
         public string Name { get => Name; set => Name = value; }
         public AddressDto Address { get => address; set => address = value; }
-        public List<BusinessItemDto> BusinessItemList { get => businessItemList; set => businessItemList = value; }
+        public List<CompanyDto> CompanyList { get => companyList; set => companyList = value; }
     }
 }

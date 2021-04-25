@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="EntityConfiguration\UserData\" />
     <Folder Include="EntityMapping\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

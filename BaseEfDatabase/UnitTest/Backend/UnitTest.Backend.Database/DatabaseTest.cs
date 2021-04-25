@@ -16,15 +16,15 @@ namespace UnitTest.Backend.Database
         }
 
         [Test]
-        public void AddBusinessItemTest()
+        public void AddCompanyTest()
         {
             ILoggerFactory logger = new Mock<ILoggerFactory>().Object;
 
             bool IsSuccessful;
             var context = new MainDatabaseContext(logger);
-            var testItem = new BusinessItem();
+            var testItem = new Company();
 
-            var businessItem = new BusinessItem()
+            var company = new Company()
             {
                 Name = "ThisIsATestItem",
                 Address = new Address()
@@ -38,17 +38,17 @@ namespace UnitTest.Backend.Database
 
             try
             {
-                context.BusinessItems.Add(businessItem);
-                testItem = context.BusinessItems.Include(x => x.Address).Where(x => x.BusinessItemId == businessItem.BusinessItemId).First();
+                context.Companies.Add(company);
+                testItem = context.Companies.Include(x => x.Address).Where(x => x.CompanyId == company.CompanyId).First();
             } catch
             {
                 IsSuccessful = false;
             }
 
-            IsSuccessful = (testItem == businessItem);
+            IsSuccessful = (testItem == company);
 
             if (IsSuccessful)
-                context.BusinessItems.Remove(businessItem);
+                context.Companies.Remove(company);
 
             Assert.IsTrue(IsSuccessful);
         }

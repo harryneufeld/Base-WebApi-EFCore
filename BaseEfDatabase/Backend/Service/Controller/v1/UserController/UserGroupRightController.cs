@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Web.Http;
 using Backend.Database.Context;
 using Shared.Model.Entity.UserData;
 
@@ -12,9 +13,8 @@ namespace Backend.Service.Controller.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
-    [Route("[controller]")]
-    [ApiController]
-    public class UserGroupRightController : ControllerBase
+    [ApiVersion("1.0")]
+    public class UserGroupRightController : BaseApiController
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;

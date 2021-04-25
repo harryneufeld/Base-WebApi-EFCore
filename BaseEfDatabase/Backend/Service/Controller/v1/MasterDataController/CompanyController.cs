@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Web.Http;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
 
@@ -12,81 +13,80 @@ namespace Backend.Service.Controller.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
-    [Route("[controller]")]
-    [ApiController]
-    public partial class BusinessItemController : ControllerBase
+    [ApiVersion("1.0")]
+    public partial class CompanyController : BaseApiController
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;
 
-        public BusinessItemController(ILogger<BusinessItemController> logger, MainDatabaseContext context)
+        public CompanyController(ILogger<CompanyController> logger, MainDatabaseContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
         #region get
-        // GET: BusinessItem
+        // GET: Company
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItems()
-            => await this.context.BusinessItems
+        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+            => await this.context.Companies
                 .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
                 .ToListAsync();
 
-        // GET: BusinessItem/123
+        // GET: Company/123
         [HttpGet("{id}")]
-        public async Task<ActionResult<BusinessItem>> GetBusinessItem(Guid id)
+        public async Task<ActionResult<Company>> GetCompany(Guid id)
         {
-            var businessItem = await this.context.BusinessItems
+            var company = await this.context.Companies
                 .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
-                .Where(b => b.BusinessItemId == id)
+                .Where(b => b.CompanyId == id)
                 .FirstAsync();
-            if (businessItem == null)
+            if (company == null)
                 return NotFound();
-            return businessItem;
+            return company;
         }
 
-        // GET: BusinessItem/TheName
+        // GET: Company/TheName
         [HttpGet()]
         [Route("Name/{Name}")]
-        public async Task<ActionResult<IEnumerable<BusinessItem>>> GetBusinessItemByName(string name)
+        public async Task<ActionResult<IEnumerable<Company>>> GetCompanyByName(string name)
         {
-            var businessItem = await this.context.BusinessItems
+            var company = await this.context.Companies
                 .AsNoTracking()
                 .Include(b => b.PersonList)
                 .Include(b => b.Address)
                 .Include(b => b.Mandator)
                 .Where(x => x.Name.Contains(name))
                 .ToListAsync();
-            if (businessItem == null)
+            if (company == null)
                 return NotFound();
-            return businessItem;
+            return company;
         }
         #endregion
 
         #region put
-        // PUT: BusinessItem/123
+        // PUT: Company/123
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBusinessItem(Guid id, BusinessItem businessItem)
+        public async Task<IActionResult> PutCompany(Guid id, Company company)
         {
-            if (id != businessItem.BusinessItemId)
+            if (id != company.CompanyId)
                 return BadRequest();
             try
             {
-                this.context.Entry(businessItem).State = EntityState.Modified;
+                this.context.Entry(company).State = EntityState.Modified;
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BusinessItemExists(id))
+                if (!CompanyExists(id))
                     return NotFound();
                 else
                     throw;
@@ -96,41 +96,41 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         #region post
-        // POST: BusinessItem
+        // POST: Company
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<BusinessItem>> PostBusinessItem(BusinessItem businessItem)
+        public async Task<ActionResult<Company>> PostCompany(Company company)
         {
             try
             {
-                this.context.BusinessItems.Add(businessItem);
+                this.context.Companies.Add(company);
                 await this.context.SaveChangesAsync();
             } catch (Exception e)
             {
-                this.logger.LogError(e,$"POST: PostBusinessItem: '{businessItem.Name}' with Id '{businessItem.BusinessItemId}'");
+                this.logger.LogError(e,$"POST: PostCompany: '{company.Name}' with Id '{company.CompanyId}'");
             }
-            return CreatedAtAction("GetBusinessItem", new { id = businessItem.BusinessItemId }, businessItem);
+            return CreatedAtAction("GetCompany", new { id = company.CompanyId }, company);
         }
         #endregion
 
         #region delete
-        // DELETE: BusinessItem/5
+        // DELETE: Company/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BusinessItem>> DeleteBusinessItem(Guid id)
+        public async Task<ActionResult<Company>> DeleteCompany(Guid id)
         {
-            var businessItem = await this.context.BusinessItems.FindAsync(id);
-            if (businessItem == null)
+            var company = await this.context.Companies.FindAsync(id);
+            if (company == null)
                 return NotFound();
-            this.context.BusinessItems.Remove(businessItem);
+            this.context.Companies.Remove(company);
             await this.context.SaveChangesAsync();
-            return businessItem;
+            return company;
         }
         #endregion
 
-        private bool BusinessItemExists(Guid id)
-            => this.context.BusinessItems
+        private bool CompanyExists(Guid id)
+            => this.context.Companies
                 .AsNoTracking()
-                .Any(e => e.BusinessItemId == id);
+                .Any(e => e.CompanyId == id);
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Web.Http;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
 
@@ -12,8 +13,7 @@ namespace Backend.Service.Controller.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
-    [Route("[controller]")]
-    [ApiController]
+    [ApiVersion("1.0")]
     public class PersonController : ControllerBase
     {
         private readonly MainDatabaseContext context;
@@ -32,7 +32,7 @@ namespace Backend.Service.Controller.MasterDataController
             => await this.context.Persons
                 .AsNoTracking()
                 .Include(p => p.Address)
-                .Include(p => p.BusinessItem)
+                .Include(p => p.Company)
                 .ToListAsync();
 
         // GET: Person/5
@@ -42,7 +42,7 @@ namespace Backend.Service.Controller.MasterDataController
             var person = await this.context.Persons
                 .AsNoTracking()
                 .Include(p => p.Address)
-                .Include(p => p.BusinessItem)
+                .Include(p => p.Company)
                 .Where(p => p.PersonId == id)
                 .SingleOrDefaultAsync();
 
@@ -59,7 +59,7 @@ namespace Backend.Service.Controller.MasterDataController
             var personList = await this.context.Persons
                 .AsNoTracking()
                 .Include(p => p.Address)
-                .Include(p => p.BusinessItem)
+                .Include(p => p.Company)
                 .Where(p => 
                     p.FirstName.Contains(name) ||
                     p.MiddleName.Contains(name) ||
@@ -79,7 +79,7 @@ namespace Backend.Service.Controller.MasterDataController
             var personList = await this.context.Persons
                 .AsNoTracking()
                 .Include(p => p.Address)
-                .Include(p => p.BusinessItem)
+                .Include(p => p.Company)
                 .Where(p =>
                     p.Mail == mailAddress)
                 .ToListAsync();
@@ -122,7 +122,7 @@ namespace Backend.Service.Controller.MasterDataController
         #region post
         /// <summary>
         /// Note: Since entities instead of DTOs are still being used, please leave the Ids blank. 
-        /// Also posting the BusinessItem or the Mandator may not work properly yet.
+        /// Also posting the Company or the Mandator may not work properly yet.
         /// </summary>
         // POST: Person
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Backend.Database.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -108,10 +108,10 @@ namespace Backend.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BusinessItems",
+                name: "Companies",
                 columns: table => new
                 {
-                    BusinessItemId = table.Column<Guid>(nullable: false),
+                    CompanyId = table.Column<Guid>(nullable: false),
                     MandatorId = table.Column<Guid>(nullable: true),
                     AddressId = table.Column<Guid>(nullable: true),
                     Name = table.Column<string>(nullable: true),
@@ -119,15 +119,15 @@ namespace Backend.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BusinessItems", x => x.BusinessItemId);
+                    table.PrimaryKey("PK_Companies", x => x.CompanyId);
                     table.ForeignKey(
-                        name: "FK_BusinessItems_Addresses_AddressId",
+                        name: "FK_Companies_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BusinessItems_Mandators_MandatorId",
+                        name: "FK_Companies_Mandators_MandatorId",
                         column: x => x.MandatorId,
                         principalTable: "Mandators",
                         principalColumn: "MandatorId",
@@ -139,7 +139,7 @@ namespace Backend.Database.Migrations
                 columns: table => new
                 {
                     PersonId = table.Column<Guid>(nullable: false),
-                    BusinessItemId = table.Column<Guid>(nullable: true),
+                    CompanyId = table.Column<Guid>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     MiddleName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
@@ -157,21 +157,21 @@ namespace Backend.Database.Migrations
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Persons_BusinessItems_BusinessItemId",
-                        column: x => x.BusinessItemId,
-                        principalTable: "BusinessItems",
-                        principalColumn: "BusinessItemId",
+                        name: "FK_Persons_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "CompanyId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BusinessItems_AddressId",
-                table: "BusinessItems",
+                name: "IX_Companies_AddressId",
+                table: "Companies",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BusinessItems_MandatorId",
-                table: "BusinessItems",
+                name: "IX_Companies_MandatorId",
+                table: "Companies",
                 column: "MandatorId");
 
             migrationBuilder.CreateIndex(
@@ -185,9 +185,9 @@ namespace Backend.Database.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Persons_BusinessItemId",
+                name: "IX_Persons_CompanyId",
                 table: "Persons",
-                column: "BusinessItemId");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserGroupRights_UserGroupId",
@@ -210,7 +210,7 @@ namespace Backend.Database.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "BusinessItems");
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "UserGroups");

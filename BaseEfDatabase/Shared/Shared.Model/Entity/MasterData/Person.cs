@@ -7,7 +7,7 @@ namespace Shared.Model.Entity.MasterData
     public class Person
     {
         private Guid personId;
-        private BusinessItem businessItem;
+        private Company company;
         private string firstName;
         private string middleName;
         private string lastName;
@@ -16,7 +16,7 @@ namespace Shared.Model.Entity.MasterData
         private string phoneNumber;
 
         public Guid PersonId{ get => personId; set => personId = value; }
-        public BusinessItem BusinessItem { get => businessItem; set => businessItem = value; }
+        public Company Company { get => company; set => company = value; }
         public string FirstName { get => firstName; set => firstName = value; }
         public string MiddleName { get => middleName; set => middleName = value; }
         public string LastName { get => lastName; set => lastName = value; }

@@ -24,6 +24,7 @@ namespace Backend.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MainDatabaseContext>();
+            services.AddTransient<MainDatabaseContext>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = 

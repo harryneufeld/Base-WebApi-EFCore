@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Database.Migrations
 {
     [DbContext(typeof(MainDatabaseContext))]
-    [Migration("20201019191220_initial")]
-    partial class initial
+    [Migration("20210425170052_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,9 +44,9 @@ namespace Backend.Database.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Shared.Model.Entity.MasterData.BusinessItem", b =>
+            modelBuilder.Entity("Shared.Model.Entity.MasterData.Company", b =>
                 {
-                    b.Property<Guid>("BusinessItemId")
+                    b.Property<Guid>("CompanyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -62,13 +62,13 @@ namespace Backend.Database.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BusinessItemId");
+                    b.HasKey("CompanyId");
 
                     b.HasIndex("AddressId");
 
                     b.HasIndex("MandatorId");
 
-                    b.ToTable("BusinessItems");
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("Shared.Model.Entity.MasterData.Mandator", b =>
@@ -105,7 +105,7 @@ namespace Backend.Database.Migrations
                     b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BusinessItemId")
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
@@ -127,7 +127,7 @@ namespace Backend.Database.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("BusinessItemId");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Persons");
                 });
@@ -220,14 +220,14 @@ namespace Backend.Database.Migrations
                     b.ToTable("UserRights");
                 });
 
-            modelBuilder.Entity("Shared.Model.Entity.MasterData.BusinessItem", b =>
+            modelBuilder.Entity("Shared.Model.Entity.MasterData.Company", b =>
                 {
                     b.HasOne("Shared.Model.Entity.MasterData.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
 
                     b.HasOne("Shared.Model.Entity.MasterData.Mandator", "Mandator")
-                        .WithMany("BusinessItemList")
+                        .WithMany("CompanyList")
                         .HasForeignKey("MandatorId");
                 });
 
@@ -244,9 +244,9 @@ namespace Backend.Database.Migrations
                         .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("Shared.Model.Entity.MasterData.BusinessItem", "BusinessItem")
+                    b.HasOne("Shared.Model.Entity.MasterData.Company", "Company")
                         .WithMany("PersonList")
-                        .HasForeignKey("BusinessItemId");
+                        .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("Shared.Model.Entity.UserData.UserGroupRight", b =>

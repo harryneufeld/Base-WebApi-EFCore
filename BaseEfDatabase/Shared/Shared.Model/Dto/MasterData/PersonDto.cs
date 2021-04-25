@@ -6,7 +6,7 @@ namespace Shared.Model.Dto.MasterData
 {
     public class PersonDto
     {
-        private BusinessItemDto businessItem;
+        private CompanyDto company;
         private string firstName;
         private string middleName;
         private string lastName;
@@ -14,7 +14,7 @@ namespace Shared.Model.Dto.MasterData
         private string mail;
         private string phoneNumber;
 
-        public BusinessItemDto BusinessItem { get => businessItem; set => businessItem = value; }
+        public CompanyDto Company { get => company; set => company = value; }
         public string FirstName { get => firstName; set => firstName = value; }
         public string MiddleName { get => middleName; set => middleName = value; }
         public string LastName { get => lastName; set => lastName = value; }

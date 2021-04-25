@@ -7,11 +7,11 @@ using System.Text;
 
 namespace Backend.Database.EntityConfiguration.MasterData
 {
-    internal class BusinessItemConfiguration : IEntityTypeConfiguration<BusinessItem>
+    internal class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
-        public void Configure(EntityTypeBuilder<BusinessItem> builder)
+        public void Configure(EntityTypeBuilder<Company> builder)
         {
-            builder.HasKey(x => x.BusinessItemId);
+            builder.HasKey(x => x.CompanyId);
             builder.Property(x => x.Name);
             builder.Property(x => x.PhoneNumber);
             builder.Property(x => x.Mandator);

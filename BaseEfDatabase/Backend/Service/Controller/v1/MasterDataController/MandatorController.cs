@@ -5,65 +5,63 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Web.Http;
 using Backend.Database.Context;
-using Shared.Model.Entity.UserData;
+using Shared.Model.Entity.MasterData;
 
 namespace Backend.Service.Controller.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
-    [Route("[controller]")]
-    [ApiController]
-    public class UserRightController : ControllerBase
+    [ApiVersion("1.0")]
+    public class MandatorController : ControllerBase
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;
 
-        public UserRightController(ILogger<UserRightController> logger, MainDatabaseContext context)
+        public MandatorController(ILogger<MandatorController> logger, MainDatabaseContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
         #region get
-        // GET: api/UserRight
+        // GET: api/Mandator
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
-            => await this.context.UserRights
+        public async Task<ActionResult<IEnumerable<Mandator>>> GetMandators()
+            => await this.context.Mandators
                 .AsNoTracking()
                 .ToListAsync();
 
-        // GET: api/UserRight/5
+        // GET: api/Mandator/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
+        public async Task<ActionResult<Mandator>> GetMandator(Guid id)
         {
-            var userRight = await this.context.UserRights
+            var mandator = await this.context.Mandators
                 .AsNoTracking()
-                .Where(x => x.UserRightId == id)
+                .Where(x => x.MandatorId == id)
                 .SingleOrDefaultAsync();
-            if (userRight == null)
+            if (mandator == null)
                 return NotFound();
-            return userRight;
+            return mandator;
         }
         #endregion
 
         #region put
-        // PUT: api/UserRight/5
+        // PUT: api/Mandator/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserRight(Guid id, UserRight userRight)
+        public async Task<IActionResult> PutMandator(Mandator mandator)
         {
-            if (id != userRight.UserRightId)
-                return BadRequest();
-            this.context.Entry(userRight).State = EntityState.Modified;
+            this.context.Entry(mandator).State = EntityState.Modified;
             try
             {
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserRightExists(id))
+                if (!this.MandatorExists(mandator.MandatorId))
                     return NotFound();
                 else
                     throw;
@@ -73,38 +71,38 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         #region post
-        // POST: api/UserRight
+        // POST: api/Mandator
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
+        public async Task<ActionResult<Mandator>> PostMandator(Mandator mandator)
         {
-            this.context.UserRights.Add(userRight);
+            this.context.Mandators.Add(mandator);
             await this.context.SaveChangesAsync();
             return CreatedAtAction(
-                "GetUserRight", 
-                new { id = userRight.UserRightId }, 
-                userRight);
+                "GetMandator", 
+                new { id = mandator.MandatorId }, 
+                mandator);
         }
         #endregion
 
         #region delete
-        // DELETE: api/UserRight/5
+        // DELETE: api/Mandator/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
+        public async Task<ActionResult<Mandator>> DeleteMandator(Guid id)
         {
-            var userRight = await this.context.UserRights.FindAsync(id);
-            if (userRight == null)
+            var mandator = await this.context.Mandators.FindAsync(id);
+            if (mandator == null)
                 return NotFound();
-            this.context.UserRights.Remove(userRight);
+            this.context.Mandators.Remove(mandator);
             await this.context.SaveChangesAsync();
-            return userRight;
+            return mandator;
         }
         #endregion
 
-        private bool UserRightExists(Guid id)
-            => this.context.UserRights
+        private bool MandatorExists(Guid id)
+            => this.context.Mandators
                 .AsNoTracking()
-                .Any(e => e.UserRightId == id);
+                .Any(e => e.MandatorId == id);
     }
 }

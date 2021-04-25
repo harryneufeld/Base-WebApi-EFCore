@@ -4,108 +4,107 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Microsoft.Web.Http;
 using Backend.Database.Context;
-using Shared.Model.Entity.MasterData;
+using Shared.Model.Entity.UserData;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Service.Controller.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
-    [Route("[controller]")]
-    [ApiController]
-    public class AddressController : ControllerBase
+    [ApiVersion("1.0")]
+    public class UserGroupController : BaseApiController
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;
 
-        public AddressController(ILogger<AddressController> logger, MainDatabaseContext context)
+        public UserGroupController(ILogger<UserGroupController> logger, MainDatabaseContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
         #region get
-        // GET: api/Address
+        // GET: api/UserGroup
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
-            => await this.context.Addresses
+        public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
+            => await this.context.UserGroups
                 .AsNoTracking()
                 .ToListAsync();
 
-        // GET: api/Address/5
+        // GET: api/UserGroup/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(Guid id)
+        public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
         {
-            var address = await this.context.Addresses
+            var userGroup = await this.context.UserGroups
                 .AsNoTracking()
-                .Where(x => x.AddressId == id)
+                .Where(x => x.UserGroupId == id)
                 .SingleOrDefaultAsync();
-            if (address == null)
+            if (userGroup == null)
                 return NotFound();
-            return address;
+            return userGroup;
         }
         #endregion
 
         #region put
-        // PUT: api/Address/5
+        // PUT: api/UserGroup/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(Guid id, Address address)
+        public async Task<IActionResult> PutUserGroup(Guid id, UserGroup userGroup)
         {
-            if (id != address.AddressId)
+            if (id != userGroup.UserGroupId)
                 return BadRequest();
-            this.context.Entry(address).State = EntityState.Modified;
+            this.context.Entry(userGroup).State = EntityState.Modified;
             try
             {
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AddressExists(id))
+                if (!UserGroupExists(id))
                     return NotFound();
                 else
                     throw;
             }
-
             return NoContent();
         }
         #endregion
 
         #region post
-        // POST: api/Address
+        // POST: api/UserGroup
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(Address address)
+        public async Task<ActionResult<UserGroup>> PostUserGroup(UserGroup userGroup)
         {
-            this.context.Addresses.Add(address);
+            this.context.UserGroups.Add(userGroup);
             await this.context.SaveChangesAsync();
             return CreatedAtAction(
-                "GetAddress", 
-                new { id = address.AddressId }, 
-                address);
+                "GetUserGroup", 
+                new { id = userGroup.UserGroupId }, 
+                userGroup);
         }
         #endregion
 
         #region delete
-        // DELETE: api/Address/5
+        // DELETE: api/UserGroup/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Address>> DeleteAddress(Guid id)
+        public async Task<ActionResult<UserGroup>> DeleteUserGroup(Guid id)
         {
-            var address = await this.context.Addresses.FindAsync(id);
-            if (address == null)
+            var userGroup = await this.context.UserGroups.FindAsync(id);
+            if (userGroup == null)
                 return NotFound();
-            this.context.Addresses.Remove(address);
+            this.context.UserGroups.Remove(userGroup);
             await this.context.SaveChangesAsync();
-            return address;
+            return userGroup;
         }
         #endregion
 
-        private bool AddressExists(Guid id)
-            => this.context.Addresses
+        private bool UserGroupExists(Guid id)
+            => this.context.UserGroups
                 .AsNoTracking()
-                .Any(e => e.AddressId == id);
+                .Any(e => e.UserGroupId == id);
     }
 }
