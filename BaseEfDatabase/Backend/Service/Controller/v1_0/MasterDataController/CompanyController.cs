@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region get
         // GET: Company
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
             => await this.context.Companies
                 .AsNoTracking()
@@ -37,6 +38,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
 
         // GET: Company/123
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Company>> GetCompany(Guid id)
         {
             var company = await this.context.Companies
@@ -54,6 +56,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // GET: Company/TheName
         [HttpGet()]
         [Route("Name/{Name}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanyByName(string name)
         {
             var company = await this.context.Companies
@@ -74,6 +77,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutCompany(Guid id, Company company)
         {
             if (id != company.CompanyId)
@@ -99,6 +103,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
             try
@@ -116,6 +121,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region delete
         // DELETE: Company/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Company>> DeleteCompany(Guid id)
         {
             var company = await this.context.Companies.FindAsync(id);

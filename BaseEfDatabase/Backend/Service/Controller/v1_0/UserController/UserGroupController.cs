@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region get
         // GET: api/UserGroup
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<UserGroup>>> GetUserGroups()
             => await this.context.UserGroups
                 .AsNoTracking()
@@ -34,6 +35,7 @@ namespace Backend.Service.Controller.v1_0.UserController
 
         // GET: api/UserGroup/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserGroup>> GetUserGroup(Guid id)
         {
             var userGroup = await this.context.UserGroups
@@ -51,6 +53,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutUserGroup(Guid id, UserGroup userGroup)
         {
             if (id != userGroup.UserGroupId)
@@ -76,6 +79,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserGroup>> PostUserGroup(UserGroup userGroup)
         {
             this.context.UserGroups.Add(userGroup);
@@ -90,6 +94,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region delete
         // DELETE: api/UserGroup/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserGroup>> DeleteUserGroup(Guid id)
         {
             var userGroup = await this.context.UserGroups.FindAsync(id);

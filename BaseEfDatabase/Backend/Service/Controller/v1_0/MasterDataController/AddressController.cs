@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region get
         // GET: api/Address
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
             => await this.context.Addresses
                 .AsNoTracking()
@@ -34,6 +35,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
 
         // GET: api/Address/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Address>> GetAddress(Guid id)
         {
             var address = await this.context.Addresses
@@ -51,6 +53,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutAddress(Guid id, Address address)
         {
             if (id != address.AddressId)
@@ -77,6 +80,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Address>> PostAddress(Address address)
         {
             this.context.Addresses.Add(address);
@@ -91,6 +95,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region delete
         // DELETE: api/Address/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Address>> DeleteAddress(Guid id)
         {
             var address = await this.context.Addresses.FindAsync(id);

@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region get
         // GET: User
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
             => await this.context.Users
                 .AsNoTracking()
@@ -34,6 +35,7 @@ namespace Backend.Service.Controller.v1_0.UserController
 
         // GET: User/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
             var user = await this.context.Users.FindAsync(id);
@@ -45,6 +47,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // GET: Name/TheName
         [HttpGet()]
         [Route("Name/{Name}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByName(string name)
         {
             var userList = await this.context.Users
@@ -62,6 +65,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // GET: User/Mail/TheMail
         [HttpGet()]
         [Route("Mail/{MailAddress}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByMail(string mailAddress)
         {
             var userList = await this.context.Users
@@ -79,6 +83,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutUser(Guid id, User user)
         {
             if (id != user.UserId)
@@ -104,6 +109,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             this.context.Users.Add(user);
@@ -118,6 +124,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region delete
         // DELETE: User/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<User>> DeleteUser(Guid id)
         {
             var user = await this.context.Users.FindAsync(id);

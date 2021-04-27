@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region get
         // GET: api/Mandator
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Mandator>>> GetMandators()
             => await this.context.Mandators
                 .AsNoTracking()
@@ -34,6 +35,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
 
         // GET: api/Mandator/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Mandator>> GetMandator(Guid id)
         {
             var mandator = await this.context.Mandators
@@ -51,6 +53,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutMandator(Mandator mandator)
         {
             this.context.Entry(mandator).State = EntityState.Modified;
@@ -74,6 +77,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Mandator>> PostMandator(Mandator mandator)
         {
             this.context.Mandators.Add(mandator);
@@ -88,6 +92,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region delete
         // DELETE: api/Mandator/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Mandator>> DeleteMandator(Guid id)
         {
             var mandator = await this.context.Mandators.FindAsync(id);

@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region get
         // GET: api/UserGroupRight
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<UserGroupRight>>> GetUserGroupRights()
             => await this.context.UserGroupRights
                 .AsNoTracking()
@@ -34,6 +35,7 @@ namespace Backend.Service.Controller.v1_0.UserController
 
         // GET: api/UserGroupRight/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserGroupRight>> GetUserGroupRight(Guid id)
         {
             var UserGroupRight = await this.context.UserGroupRights
@@ -51,6 +53,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutUserGroupRight(Guid id, UserGroupRight UserGroupRight)
         {
             if (id != UserGroupRight.UserGroupRightId)
@@ -76,6 +79,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserGroupRight>> PostUserGroupRight(UserGroupRight UserGroupRight)
         {
             this.context.UserGroupRights.Add(UserGroupRight);
@@ -90,6 +94,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region delete
         // DELETE: api/UserGroupRight/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserGroupRight>> DeleteUserGroupRight(Guid id)
         {
             var UserGroupRight = await this.context.UserGroupRights.FindAsync(id);

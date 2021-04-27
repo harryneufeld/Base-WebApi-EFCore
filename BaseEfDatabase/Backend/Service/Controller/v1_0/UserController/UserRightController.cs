@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region get
         // GET: api/UserRight
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
             => await this.context.UserRights
                 .AsNoTracking()
@@ -34,6 +35,7 @@ namespace Backend.Service.Controller.v1_0.UserController
 
         // GET: api/UserRight/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
         {
             var userRight = await this.context.UserRights
@@ -51,6 +53,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutUserRight(Guid id, UserRight userRight)
         {
             if (id != userRight.UserRightId)
@@ -76,6 +79,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
         {
             this.context.UserRights.Add(userRight);
@@ -90,6 +94,7 @@ namespace Backend.Service.Controller.v1_0.UserController
         #region delete
         // DELETE: api/UserRight/5
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
         {
             var userRight = await this.context.UserRights.FindAsync(id);

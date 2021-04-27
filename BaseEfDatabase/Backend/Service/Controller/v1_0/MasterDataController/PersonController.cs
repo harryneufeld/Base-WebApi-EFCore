@@ -27,6 +27,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #region get
         // GET: Person
         [HttpGet]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
             => await this.context.Persons
                 .AsNoTracking()
@@ -36,6 +37,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
 
         // GET: Person/5
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<Person>> GetPerson(Guid id)
         {
             var person = await this.context.Persons
@@ -53,6 +55,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // GET: Person/Name/TheName
         [HttpGet()]
         [Route("Name/{Name}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonByName(string name)
         {
             var personList = await this.context.Persons
@@ -73,6 +76,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // GET: Person/Mail/MailAddress
         [HttpGet()]
         [Route("Mail/{MailAddress}")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonByMail(string mailAddress)
         {
             var personList = await this.context.Persons
@@ -97,6 +101,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> PutPerson(Guid id, Person person)
         {
             if (id != person.PersonId)
