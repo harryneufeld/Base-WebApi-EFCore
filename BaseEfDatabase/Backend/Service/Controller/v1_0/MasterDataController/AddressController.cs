@@ -5,106 +5,106 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Web.Http;
 using Backend.Database.Context;
-using Shared.Model.Entity.UserData;
+using Shared.Model.Entity.MasterData;
 
-namespace Backend.Service.Controller.MasterDataController
+namespace Backend.Service.Controller.v1_0.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
     [ApiVersion("1.0")]
-    public class UserRightController : BaseApiController
+    public class AddressController : BaseApiController
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;
 
-        public UserRightController(ILogger<UserRightController> logger, MainDatabaseContext context)
+        public AddressController(ILogger<AddressController> logger, MainDatabaseContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
         #region get
-        // GET: api/UserRight
+        // GET: api/Address
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
-            => await this.context.UserRights
+        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
+            => await this.context.Addresses
                 .AsNoTracking()
                 .ToListAsync();
 
-        // GET: api/UserRight/5
+        // GET: api/Address/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
+        public async Task<ActionResult<Address>> GetAddress(Guid id)
         {
-            var userRight = await this.context.UserRights
+            var address = await this.context.Addresses
                 .AsNoTracking()
-                .Where(x => x.UserRightId == id)
+                .Where(x => x.AddressId == id)
                 .SingleOrDefaultAsync();
-            if (userRight == null)
+            if (address == null)
                 return NotFound();
-            return userRight;
+            return address;
         }
         #endregion
 
         #region put
-        // PUT: api/UserRight/5
+        // PUT: api/Address/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserRight(Guid id, UserRight userRight)
+        public async Task<IActionResult> PutAddress(Guid id, Address address)
         {
-            if (id != userRight.UserRightId)
+            if (id != address.AddressId)
                 return BadRequest();
-            this.context.Entry(userRight).State = EntityState.Modified;
+            this.context.Entry(address).State = EntityState.Modified;
             try
             {
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserRightExists(id))
+                if (!AddressExists(id))
                     return NotFound();
                 else
                     throw;
             }
+
             return NoContent();
         }
         #endregion
 
         #region post
-        // POST: api/UserRight
+        // POST: api/Address
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
+        public async Task<ActionResult<Address>> PostAddress(Address address)
         {
-            this.context.UserRights.Add(userRight);
+            this.context.Addresses.Add(address);
             await this.context.SaveChangesAsync();
             return CreatedAtAction(
-                "GetUserRight", 
-                new { id = userRight.UserRightId }, 
-                userRight);
+                "GetAddress", 
+                new { id = address.AddressId }, 
+                address);
         }
         #endregion
 
         #region delete
-        // DELETE: api/UserRight/5
+        // DELETE: api/Address/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
+        public async Task<ActionResult<Address>> DeleteAddress(Guid id)
         {
-            var userRight = await this.context.UserRights.FindAsync(id);
-            if (userRight == null)
+            var address = await this.context.Addresses.FindAsync(id);
+            if (address == null)
                 return NotFound();
-            this.context.UserRights.Remove(userRight);
+            this.context.Addresses.Remove(address);
             await this.context.SaveChangesAsync();
-            return userRight;
+            return address;
         }
         #endregion
 
-        private bool UserRightExists(Guid id)
-            => this.context.UserRights
+        private bool AddressExists(Guid id)
+            => this.context.Addresses
                 .AsNoTracking()
-                .Any(e => e.UserRightId == id);
+                .Any(e => e.AddressId == id);
     }
 }

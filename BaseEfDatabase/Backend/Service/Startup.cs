@@ -21,22 +21,27 @@ namespace Backend.Service
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(ref IServiceCollection services)
         {
             services.AddDbContext<MainDatabaseContext>();
             services.AddTransient<MainDatabaseContext>();
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = 
+                    options.SerializerSettings.ReferenceLoopHandling =
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+                        );
+            services.AddApiVersioning();
+            ConfigureSwagger(ref services);
+        }
 
+        private static void ConfigureSwagger(ref IServiceCollection services)
+        {
             // Swagger registration
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo 
+                c.SwaggerDoc("v1.0", new OpenApiInfo
                 {
-                    Version = "v1",
+                    Version = "v1.0",
                     Title = "CompanyApi",
                     Description = "A simple API for accessing company data"
                 });
@@ -58,8 +63,8 @@ namespace Backend.Service
             });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CompanyApi v1");
-                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "CompanyApi v1.0");
+                c.RoutePrefix = String.Empty;
             });
 
             // Debug Configuration

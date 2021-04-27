@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Web.Http;
 using Backend.Database.Context;
 using Shared.Model.Entity.UserData;
 using Microsoft.Extensions.Logging;
 
-namespace Backend.Service.Controller.MasterDataController
+namespace Backend.Service.Controller.v1_0.UserController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen

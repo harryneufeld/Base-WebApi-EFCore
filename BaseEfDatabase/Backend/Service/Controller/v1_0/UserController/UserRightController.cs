@@ -5,65 +5,64 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Web.Http;
 using Backend.Database.Context;
 using Shared.Model.Entity.UserData;
 
-namespace Backend.Service.Controller.MasterDataController
+namespace Backend.Service.Controller.v1_0.UserController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
     [ApiVersion("1.0")]
-    public class UserGroupRightController : BaseApiController
+    public class UserRightController : BaseApiController
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;
 
-        public UserGroupRightController(ILogger<UserGroupRightController> logger, MainDatabaseContext context)
+        public UserRightController(ILogger<UserRightController> logger, MainDatabaseContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
         #region get
-        // GET: api/UserGroupRight
+        // GET: api/UserRight
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserGroupRight>>> GetUserGroupRights()
-            => await this.context.UserGroupRights
+        public async Task<ActionResult<IEnumerable<UserRight>>> GetUserRights()
+            => await this.context.UserRights
                 .AsNoTracking()
                 .ToListAsync();
 
-        // GET: api/UserGroupRight/5
+        // GET: api/UserRight/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserGroupRight>> GetUserGroupRight(Guid id)
+        public async Task<ActionResult<UserRight>> GetUserRight(Guid id)
         {
-            var UserGroupRight = await this.context.UserGroupRights
+            var userRight = await this.context.UserRights
                 .AsNoTracking()
-                .Where(x => x.UserGroupRightId == id)
+                .Where(x => x.UserRightId == id)
                 .SingleOrDefaultAsync();
-            if (UserGroupRight == null)
+            if (userRight == null)
                 return NotFound();
-            return UserGroupRight;
+            return userRight;
         }
         #endregion
 
         #region put
-        // PUT: api/UserGroupRight/5
+        // PUT: api/UserRight/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserGroupRight(Guid id, UserGroupRight UserGroupRight)
+        public async Task<IActionResult> PutUserRight(Guid id, UserRight userRight)
         {
-            if (id != UserGroupRight.UserGroupRightId)
+            if (id != userRight.UserRightId)
                 return BadRequest();
-            this.context.Entry(UserGroupRight).State = EntityState.Modified;
+            this.context.Entry(userRight).State = EntityState.Modified;
             try
             {
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserGroupRightExists(id))
+                if (!UserRightExists(id))
                     return NotFound();
                 else
                     throw;
@@ -73,38 +72,38 @@ namespace Backend.Service.Controller.MasterDataController
         #endregion
 
         #region post
-        // POST: api/UserGroupRight
+        // POST: api/UserRight
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<UserGroupRight>> PostUserGroupRight(UserGroupRight UserGroupRight)
+        public async Task<ActionResult<UserRight>> PostUserRight(UserRight userRight)
         {
-            this.context.UserGroupRights.Add(UserGroupRight);
+            this.context.UserRights.Add(userRight);
             await this.context.SaveChangesAsync();
             return CreatedAtAction(
-                "GetUserGroupRight", 
-                new { id = UserGroupRight.UserGroupRightId }, 
-                UserGroupRight);
+                "GetUserRight", 
+                new { id = userRight.UserRightId }, 
+                userRight);
         }
         #endregion
 
         #region delete
-        // DELETE: api/UserGroupRight/5
+        // DELETE: api/UserRight/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserGroupRight>> DeleteUserGroupRight(Guid id)
+        public async Task<ActionResult<UserRight>> DeleteUserRight(Guid id)
         {
-            var UserGroupRight = await this.context.UserGroupRights.FindAsync(id);
-            if (UserGroupRight == null)
+            var userRight = await this.context.UserRights.FindAsync(id);
+            if (userRight == null)
                 return NotFound();
-            this.context.UserGroupRights.Remove(UserGroupRight);
+            this.context.UserRights.Remove(userRight);
             await this.context.SaveChangesAsync();
-            return UserGroupRight;
+            return userRight;
         }
         #endregion
 
-        private bool UserGroupRightExists(Guid id)
-            => this.context.UserGroupRights
+        private bool UserRightExists(Guid id)
+            => this.context.UserRights
                 .AsNoTracking()
-                .Any(e => e.UserGroupRightId == id);
+                .Any(e => e.UserRightId == id);
     }
 }

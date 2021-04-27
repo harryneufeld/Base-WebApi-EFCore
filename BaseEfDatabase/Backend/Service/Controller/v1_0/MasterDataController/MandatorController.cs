@@ -5,107 +5,103 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Web.Http;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
 
-namespace Backend.Service.Controller.MasterDataController
+namespace Backend.Service.Controller.v1_0.MasterDataController
 {
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
     [ApiVersion("1.0")]
-    public class AddressController : BaseApiController
+    public class MandatorController : ControllerBase
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;
 
-        public AddressController(ILogger<AddressController> logger, MainDatabaseContext context)
+        public MandatorController(ILogger<MandatorController> logger, MainDatabaseContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
         #region get
-        // GET: api/Address
+        // GET: api/Mandator
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
-            => await this.context.Addresses
+        public async Task<ActionResult<IEnumerable<Mandator>>> GetMandators()
+            => await this.context.Mandators
                 .AsNoTracking()
                 .ToListAsync();
 
-        // GET: api/Address/5
+        // GET: api/Mandator/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(Guid id)
+        public async Task<ActionResult<Mandator>> GetMandator(Guid id)
         {
-            var address = await this.context.Addresses
+            var mandator = await this.context.Mandators
                 .AsNoTracking()
-                .Where(x => x.AddressId == id)
+                .Where(x => x.MandatorId == id)
                 .SingleOrDefaultAsync();
-            if (address == null)
+            if (mandator == null)
                 return NotFound();
-            return address;
+            return mandator;
         }
         #endregion
 
         #region put
-        // PUT: api/Address/5
+        // PUT: api/Mandator/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(Guid id, Address address)
+        public async Task<IActionResult> PutMandator(Mandator mandator)
         {
-            if (id != address.AddressId)
-                return BadRequest();
-            this.context.Entry(address).State = EntityState.Modified;
+            this.context.Entry(mandator).State = EntityState.Modified;
             try
             {
                 await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AddressExists(id))
+                if (!this.MandatorExists(mandator.MandatorId))
                     return NotFound();
                 else
                     throw;
             }
-
             return NoContent();
         }
         #endregion
 
         #region post
-        // POST: api/Address
+        // POST: api/Mandator
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(Address address)
+        public async Task<ActionResult<Mandator>> PostMandator(Mandator mandator)
         {
-            this.context.Addresses.Add(address);
+            this.context.Mandators.Add(mandator);
             await this.context.SaveChangesAsync();
             return CreatedAtAction(
-                "GetAddress", 
-                new { id = address.AddressId }, 
-                address);
+                "GetMandator", 
+                new { id = mandator.MandatorId }, 
+                mandator);
         }
         #endregion
 
         #region delete
-        // DELETE: api/Address/5
+        // DELETE: api/Mandator/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Address>> DeleteAddress(Guid id)
+        public async Task<ActionResult<Mandator>> DeleteMandator(Guid id)
         {
-            var address = await this.context.Addresses.FindAsync(id);
-            if (address == null)
+            var mandator = await this.context.Mandators.FindAsync(id);
+            if (mandator == null)
                 return NotFound();
-            this.context.Addresses.Remove(address);
+            this.context.Mandators.Remove(mandator);
             await this.context.SaveChangesAsync();
-            return address;
+            return mandator;
         }
         #endregion
 
-        private bool AddressExists(Guid id)
-            => this.context.Addresses
+        private bool MandatorExists(Guid id)
+            => this.context.Mandators
                 .AsNoTracking()
-                .Any(e => e.AddressId == id);
+                .Any(e => e.MandatorId == id);
     }
 }
