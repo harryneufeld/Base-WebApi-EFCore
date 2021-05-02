@@ -6,28 +6,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Microsoft.Extensions.DependencyInjection;
+using FluentAssertions;
 
 namespace UnitTest.Database
 {
     public class DatabaseTest
     {
         ILoggerFactory factory;
+        MainDatabaseContext context;
 
         public DatabaseTest()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddLogging()
-                .BuildServiceProvider();
+            //var serviceProvider = new ServiceCollection()
+            //    .AddLogging()
+            //    .BuildServiceProvider();
 
-            var factory = serviceProvider.GetService<ILoggerFactory>();
-            var logger = factory.CreateLogger<Company>();
+            this.factory = new Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory();
         }
 
         [Fact]
-        public void AddCompanyTest()
+        public async void AddCompanyTest()
         {            
-            bool IsSuccessful;
-            var context = new MainDatabaseContext(this.factory);
+            this.context = new MainDatabaseContext(this.factory);
             var testItem = new Company();
 
             var company = new Company()
@@ -42,24 +42,24 @@ namespace UnitTest.Database
                 },
             };
 
-            try
-            {
-                context.Companies.Add(company);
-                testItem = context.Companies
-                    .Include(x => x.Address)
-                    .Where(x => x.CompanyId == company.CompanyId)
-                    .First();
-            } catch
-            {
-                IsSuccessful = false;
-            }
-
-            IsSuccessful = (testItem == company);
-
-            if (IsSuccessful)
-                context.Companies.Remove(company);
-
-            Assert.True(IsSuccessful);
+            this.context.Companies.Add(company);
+            await this.context.SaveChangesAsync();
+            testItem = await this.context.Companies
+                .Include(x => x.Address)
+                .Where(x => x.CompanyId == company.CompanyId)
+                .FirstOrDefaultAsync();
+ 
+            testItem.Name.Should()
+                .Be(company.Name);
+            testItem.Address.City.Should()
+                .Be(company.Address.City);
+            testItem.Address.PostalCode.Should()
+                .Be(company.Address.PostalCode);
+            testItem.Address.StreetName.Should()
+                .Be(company.Address.StreetName);
+            testItem.Address.StreetNumber.Should()
+                .Be(company.Address.StreetNumber);
+            //Assert.True(IsSuccessful);
         }
 
     }

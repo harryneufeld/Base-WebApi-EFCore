@@ -10,7 +10,7 @@ namespace Backend.Database.Context
     public class MainDatabaseContext : DatabaseContextBase
     {
         #region Fields
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILoggerFactory loggerFactory;
         #endregion
 
         #region Properties
@@ -27,7 +27,7 @@ namespace Backend.Database.Context
         #region Contructor
         public MainDatabaseContext(ILoggerFactory loggerFactory)
         {
-            _loggerFactory = loggerFactory;
+            this.loggerFactory = loggerFactory;
             Database.Migrate();
         }
         #endregion
@@ -36,7 +36,7 @@ namespace Backend.Database.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                  .UseLoggerFactory(_loggerFactory);
+                  .UseLoggerFactory(this.loggerFactory);
 
             base.OnConfiguring(optionsBuilder);
         }
