@@ -1,4 +1,4 @@
-using NUnit.Framework;
+using Xunit;
 using Backend.Database.Context;
 using Shared.Model.Entity.MasterData;
 using System.Linq;
@@ -8,18 +8,18 @@ using Moq;
 
 namespace UnitTest.Backend.Database
 {
-    public class Tests
+    public class DatabaseTest
     {
-        [SetUp]
-        public void Setup()
+        ILoggerFactory logger;
+
+        public DatabaseTest()
         {
+            logger = new Mock<ILoggerFactory>().Object;
         }
 
-        [Test]
+        [Fact]
         public void AddCompanyTest()
-        {
-            ILoggerFactory logger = new Mock<ILoggerFactory>().Object;
-
+        {            
             bool IsSuccessful;
             var context = new MainDatabaseContext(logger);
             var testItem = new Company();
@@ -50,7 +50,7 @@ namespace UnitTest.Backend.Database
             if (IsSuccessful)
                 context.Companies.Remove(company);
 
-            Assert.IsTrue(IsSuccessful);
+            Assert.True(IsSuccessful);
         }
 
     }

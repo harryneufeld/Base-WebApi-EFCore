@@ -8,7 +8,7 @@ namespace Backend.Service.Configuration
 {
     public static class AppConfiguration
     {
-        public static void ConfigureSwagger(this IApplicationBuilder app)
+        public static void UseSwaggerExtension(this IApplicationBuilder app)
         {
             app.UseSwagger(c =>
             {
@@ -16,7 +16,7 @@ namespace Backend.Service.Configuration
             });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "CompanyApi v1.0");
+                c.SwaggerEndpoint("/swagger/v1_0/swagger.json", "CompanyApi v1.0");
                 c.RoutePrefix = String.Empty;
             });
         }
