@@ -13,7 +13,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
     // TODO: DTOs statt entities verwenden
     // TODO: Authentication hinzufügen
     [ApiVersion("1.0")]
-    public class PersonController : ControllerBase
+    public class PersonController : BaseApiController
     {
         private readonly MainDatabaseContext context;
         private readonly ILogger logger;

@@ -25,7 +25,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         }
 
         #region get
-        // GET: api/Address
+        // GET: v1/Address
         [HttpGet]
         [MapToApiVersion("1.0")]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
@@ -33,7 +33,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
                 .AsNoTracking()
                 .ToListAsync();
 
-        // GET: api/Address/5
+        // GET: v1/Address/5
         [HttpGet("{id}")]
         [MapToApiVersion("1.0")]
         public async Task<ActionResult<Address>> GetAddress(Guid id)
@@ -49,7 +49,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #endregion
 
         #region put
-        // PUT: api/Address/5
+        // PUT: v1/Address/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -76,7 +76,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #endregion
 
         #region post
-        // POST: api/Address
+        // POST: v1/Address
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -93,7 +93,7 @@ namespace Backend.Service.Controller.v1_0.MasterDataController
         #endregion
 
         #region delete
-        // DELETE: api/Address/5
+        // DELETE: v1/Address/5
         [HttpDelete("{id}")]
         [MapToApiVersion("1.0")]
         public async Task<ActionResult<Address>> DeleteAddress(Guid id)

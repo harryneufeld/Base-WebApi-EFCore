@@ -26,7 +26,7 @@ namespace Backend.Service
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            services.AddApiVersioning();
+            //services.AddApiVersioning();
             services.AddSwaggerExtension();
         }
 
